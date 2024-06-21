@@ -1,4 +1,4 @@
-## Projeto Corretora de Imóveis
+# Projeto Corretora de Imóveis
 
 ## Descrição do Projeto
 
@@ -65,3 +65,16 @@ O Projeto Corretora de Imóveis é uma aplicação web desenvolvida para resolve
 - **Funcionalidades**:
   - Exibição de todos os imóveis cadastrados por todos os corretores.
   - Filtro por cidade, preço, etc.
+
+## Como Rodar o Projeto
+
+Para rodar o projeto, é necessário instalar as dependências. Execute o seguinte comando no terminal:
+
+
+pip install -r requirements.txt
+
+Em seguida, para iniciar a aplicação, utilize:
+
+uvicorn main:app --reload
+
+
