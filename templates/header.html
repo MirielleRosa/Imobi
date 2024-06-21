@@ -1,7 +1,7 @@
-<!-- <nav class="navbar navbar-expand-lg bg-body-secondary">
+<nav class="navbar navbar-expand-lg bg-body-secondary">
     <div class="container">
         <a class="navbar-brand" href="/">
-            <img src="/static/img/logotipo.svg" style="height: 64px;">
+            <!-- <img src="/static/img/logotipo.svg" style="height: 64px;"> -->
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuPrincipal">
             <span class="navbar-toggler-icon"></span>
@@ -12,12 +12,9 @@
                 <li class="nav-item">
                     <a class="nav-link {{ 'active' if pagina_atual == '/' }}" href="/">Principal</a>
                 </li>
+                {% if not pessoa or not pessoa.nome -%}
                 <li class="nav-item">
-                    <a class="nav-link {{ 'active' if pagina_atual == '/contato' }}" href="/contato">Contato</a>
-                </li>
-                {% if not cliente or not cliente.nome -%}
-                <li class="nav-item">
-                    <a class="nav-link {{ 'active' if pagina_atual == '/cadastro' }}" href="/cadastro">Quero me cadastrar!</a>
+                    <a class="nav-link {{ 'active' if pagina_atual == '/cadastro' }}" href="/cadastro">Cadastre-se</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ 'active' if pagina_atual == '/entrar' }}" href="/entrar">Entrar</a>
@@ -25,11 +22,11 @@
                 {%- else: -%}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                        Olá, <b>{{ cliente.nome }}</b>!
+                        Olá, <b>{{ pessoa.nome }}</b>!
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item {{ 'active' if pagina_atual == '/cliente/pedidos' }}" href="/cliente/pedidos">Meus Pedidos</a></li>
-                        <li><a class="dropdown-item  {{ 'active' if pagina_atual == '/cliente/perfil' }}" href="/cliente/perfil">Meu Perfil</a></li>
+                        <li><a class="dropdown-item {{ 'active' if pagina_atual == '/pessoa/pedidos' }}" href="/pessoa/pedidos">Meus Pedidos</a></li>
+                        <li><a class="dropdown-item  {{ 'active' if pagina_atual == '/pessoa/perfil' }}" href="/pessoa/perfil">Meu Perfil</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
@@ -43,10 +40,10 @@
                 </li>
                 {%- endif -%}
             </ul>
-            <form class="d-flex" role="search" action="/buscar" method="get">
-                <input class="form-control me-2" type="search" placeholder="O que deseja buscar?" name="q">
+            <!-- <form class="d-flex" role="search" action="/buscar" method="get">
+                <input class="form-control me-2" type="search" placeholder="Busca" name="q">
                 <button class="btn btn-dark" type="submit">Buscar</button>
-            </form>
+            </form> -->
         </div>
     </div>
-</nav> -->
+</nav>
