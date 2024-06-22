@@ -1,7 +1,7 @@
 import re
 from datetime import date
 from typing import Any, Optional
-
+from repositories.pessoa_repo import PessoaRepo
 
 def is_in_range(
     field_value: int | float,
@@ -14,20 +14,17 @@ def is_in_range(
     else:
         return f"O valor do campo <b>{field_label}</b> deve estar entre {low} e {high}."
 
-
 def is_not_none(field_value: Any, field_label: str) -> str:
     if field_value is not None:
         return ""
     else:
         return f"O valor do campo <b>{field_label}</b> não pode ser nulo."
 
-
 def is_not_empty(field_value: str, field_label: str) -> str:
     if field_value.strip() != "":
         return ""
     else:
         return f"O valor do campo <b>{field_label}</b> não pode ser vazio."
-
 
 def is_size_between(
     field_value: str,
@@ -40,14 +37,12 @@ def is_size_between(
     else:
         return f"O valor do campo <b>{field_label}</b> deve ter entre {min_size} e {max_size} caracteres."
 
-
 def is_max_size(
     field_value: str, field_label: str, max_size: int) -> str:
     if len(field_value) <= max_size:
         return ""
     else:
         return f"O valor do campo <b>{field_label}</b> deve ter no máximo {max_size} caracteres."
-
 
 def is_min_size(
     field_value: str, field_label: str, min_size: int) -> str:
@@ -56,7 +51,6 @@ def is_min_size(
     else:
         return f"O valor do campo <b>{field_label}</b> deve ter no mínimo {min_size} caracteres."
 
-
 def is_matching_regex(
     field_value: str, field_label: str, regex: str) -> str:
     if re.match(regex, field_value) is not None:
@@ -64,27 +58,23 @@ def is_matching_regex(
     else:
         return f"O valor do campo <b>{field_label}</b> está com o formato incorreto."
 
-
 def is_email(field_value: str, field_label: str) -> str:
     if re.match(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", field_value) is not None:
         return ""
     else:
-        return f"O valor do campo <b>{field_label}</b> deve ser um e-mail com formato válido."
-
+        return f"O valor do campo <b>{field_label}</b> deve ser um e-mail com formato válido."
 
 def is_cpf(field_value: str, field_label: str) -> str:
     if re.match(r"^\d{3}\.\d{3}\.\d{3}-\d{2}$", field_value) is not None:
         return ""
     else:
-        return f"O valor do campo <b>{field_label}</b> deve ser um CPF válido."
-
+        return f"O valor do campo <b>{field_label}</b> deve ser um CPF válido."
 
 def is_cnpj(field_value: str, field_label: str) -> str:
     if re.match(r"^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$", field_value) is not None:
         return ""
     else:
-        return f"O valor do campo <b>{field_label}</b> deve ser um CNPJ válido."
-
+        return f"O valor do campo <b>{field_label}</b> deve ser um CNPJ válido."
 
 def is_phone_number(
     field_value: str, field_label: str) -> str:
@@ -93,21 +83,18 @@ def is_phone_number(
     else:
         return f"O valor do campo <b>{field_label}</b> deve ser um telefone no formato (99) 99999-9999."
 
-
 def is_cep(field_value: str, field_label: str) -> str:
     if re.match(r"^\d{5}-\d{3}$", field_value) is not None:
         return ""
     else:
-        return f"O valor do campo <b>{field_label}</b> deve ser um CEP válido."
-
+        return f"O valor do campo <b>{field_label}</b> deve ser um CEP válido."
 
 def is_person_name(
     field_value: str, field_label: str) -> str:
     if re.match(r"^[a-zA-ZÀ-ú']{2,40}$", field_value) is not None:
         return ""
     else:
-        return f"O valor do campo <b>{field_label}</b> deve ser um nome válido."
-
+        return f"O valor do campo <b>{field_label}</b> deve ser um nome válido."
 
 def is_person_fullname(
     field_value: str, field_label: str) -> str:
@@ -117,16 +104,14 @@ def is_person_fullname(
     ):
         return ""
     else:
-        return f"O valor do campo <b>{field_label}</b> deve ser um nome completo válido."
-
+        return f"O valor do campo <b>{field_label}</b> deve ser um nome completo válido."
 
 def is_project_name(
     field_value: str, field_label: str) -> str:
     if re.match(r"^[\w]+(\s[\w]+)*$", field_value) is not None:
         return ""
     else:
-        return f"O valor do campo <b>{field_label}</b> deve ser um nome válido."
-
+        return f"O valor do campo <b>{field_label}</b> deve ser um nome válido."
 
 def is_password(
     field_value: str, field_label: str) -> str:
@@ -146,8 +131,7 @@ def is_password(
     ):
         return ""
     else:
-        return f"O valor do campo <b>{field_label}</b> deve ser uma senha válida entre 4 e 64 caracteres, contendo pelo menos um caractere minúsculo, um maiúsculo, um dígito e um caractere especial."        
-
+        return f"O valor do campo <b>{field_label}</b> deve ser uma senha válida entre 4 e 64 caracteres, contendo pelo menos um caractere minúsculo, um maiúsculo, um dígito e um caractere especial."
 
 def is_matching_fields(
     field_value: str,
@@ -160,14 +144,12 @@ def is_matching_fields(
     else:
         return f"O valor do campo <b>{field_label}</b> deve ser igual ao do campo {matching_field_label}."
 
-
 def is_selected_id_valid(
     field_value: int, field_label: str) -> str:
     if field_value > 0:
         return ""
     else:
         return f"Selecione uma opção para o campo <b>{field_label}</b>."
-    
 
 def is_greater_than(
     field_value: int | float,
@@ -179,7 +161,6 @@ def is_greater_than(
     else:
         return f"O valor do campo <b>{field_label}</b> deve ser maior que {min_value}."
 
-
 def is_less_than(
     field_value: int | float,
     field_label: str,
@@ -189,7 +170,6 @@ def is_less_than(
         return ""
     else:
         return f"O valor do campo <b>{field_label}</b> deve ser menor que {max_value}."
-
 
 def is_greater_than_or_equal(
     field_value: int | float,
@@ -201,7 +181,6 @@ def is_greater_than_or_equal(
     else:
         return f"O valor do campo <b>{field_label}</b> deve ser maior ou igual a {min_value}."
 
-
 def is_less_than_or_equal(
     field_value: int | float,
     field_label: str,
@@ -212,7 +191,6 @@ def is_less_than_or_equal(
     else:
         return f"O valor do campo <b>{field_label}</b> deve ser menor ou igual a {max_value}."
 
-
 def is_date_valid(
     field_value: str,
     field_label: str
@@ -221,8 +199,7 @@ def is_date_valid(
         date.fromisoformat(field_value)
         return ""
     except ValueError:
-        return f"O valor do campo <b>{field_label}</b> deve ser uma data válida no formato YYYY-MM-DD."
-
+        return f"O valor do campo <b>{field_label}</b> deve ser uma data válida no formato YYYY-MM-DD."
 
 def is_date_between(
     field_value: date,
@@ -234,3 +211,21 @@ def is_date_between(
         return ""
     else:
         return f"O valor do campo <b>{field_label}</b> deve estar entre {min_date.strftime('%d/%m/%Y')} e {max_date.strftime('%d/%m/%Y')}."
+
+def is_email_unique(field_value: str, field_label: str) -> str:
+    if PessoaRepo.obter_por_email(field_value) is None:
+        return ""
+    else:
+        return f"O valor do campo <b>{field_label}</b> já está cadastrado."
+
+def is_phone_unique(field_value: str, field_label: str) -> str:
+    if PessoaRepo.obter_por_telefone(field_value) is None:
+        return ""
+    else:
+        return f"O valor do campo <b>{field_label}</b> já está cadastrado."
+
+def is_cpf_unique(field_value: str, field_label: str) -> str:
+    if PessoaRepo.obter_por_cpf(field_value) is None:
+        return ""
+    else:
+        return f"O valor do campo <b>{field_label}</b> já está cadastrado."

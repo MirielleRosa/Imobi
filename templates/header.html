@@ -12,9 +12,12 @@
                 <li class="nav-item">
                     <a class="nav-link {{ 'active' if pagina_atual == '/' }}" href="/">Principal</a>
                 </li>
+                <!-- <li class="nav-item">
+                    <a class="nav-link {{ 'active' if pagina_atual == '/contato' }}" href="/contato">Contato</a>
+                </li> -->
                 {% if not pessoa or not pessoa.nome -%}
                 <li class="nav-item">
-                    <a class="nav-link {{ 'active' if pagina_atual == '/cadastro' }}" href="/cadastro">Cadastre-se</a>
+                    <a class="nav-link {{ 'active' if pagina_atual == '/cadastro' }}" href="/cadastro">Quero me cadastrar!</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ 'active' if pagina_atual == '/entrar' }}" href="/entrar">Entrar</a>
@@ -25,7 +28,7 @@
                         Olá, <b>{{ pessoa.nome }}</b>!
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item {{ 'active' if pagina_atual == '/pessoa/pedidos' }}" href="/pessoa/pedidos">Meus Pedidos</a></li>
+                        <!-- <li><a class="dropdown-item {{ 'active' if pagina_atual == '/pessoa/pedidos' }}" href="/pessoa/pedidos">Meus Pedidos</a></li> -->
                         <li><a class="dropdown-item  {{ 'active' if pagina_atual == '/pessoa/perfil' }}" href="/pessoa/perfil">Meu Perfil</a></li>
                         <li>
                             <hr class="dropdown-divider">
@@ -33,17 +36,12 @@
                         <li><a class="dropdown-item" href="/sair">Sair</a></li>
                     </ul>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ 'active' if pagina_atual == '/carrinho' }}" href="/carrinho">
-                        <i class="bi bi-cart-fill"></i>
-                    </a>
-                </li>
                 {%- endif -%}
             </ul>
-            <!-- <form class="d-flex" role="search" action="/buscar" method="get">
-                <input class="form-control me-2" type="search" placeholder="Busca" name="q">
+            <form class="d-flex" role="search" action="/buscar" method="get">
+                <input class="form-control me-2" type="search" placeholder="O que deseja buscar?" name="q">
                 <button class="btn btn-dark" type="submit">Buscar</button>
-            </form> -->
+            </form>
         </div>
     </div>
 </nav>

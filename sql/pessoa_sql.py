@@ -58,6 +58,16 @@ SQL_OBTER_POR_TOKEN = """
     WHERE token=?
 """
 
+SQL_OBTER_POR_TELEFONE = """
+    SELECT * FROM pessoa
+    WHERE telefone = ?
+"""
+
+SQL_OBTER_POR_CPF = """
+    SELECT * FROM pessoa
+    WHERE cpf = ?
+"""
+
 SQL_OBTER_QUANTIDADE = """
     SELECT COUNT(*) FROM pessoa
 """
