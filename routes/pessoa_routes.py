@@ -14,8 +14,17 @@ templates = Jinja2Templates(directory="templates")
 @router.get("/perfil")
 def get_root(request: Request, pessoa_logada: Pessoa = Depends(obter_pessoa_logada)):
     checar_autorizacao(pessoa_logada)
-    return templates.TemplateResponse("perfil.html", {"request": request})
+    return templates.TemplateResponse("perfil.html", {"request": request, "pessoa": pessoa_logada})
 
+@router.get("/imoveis")
+def get_root(request: Request, pessoa_logada: Pessoa = Depends(obter_pessoa_logada)):
+    checar_autorizacao(pessoa_logada)
+    return templates.TemplateResponse("imoveis.html", {"request": request, "pessoa": pessoa_logada})
+
+@router.get("/cadastro_imovel")
+def get_root(request: Request, pessoa_logada: Pessoa = Depends(obter_pessoa_logada)):
+    checar_autorizacao(pessoa_logada)
+    return templates.TemplateResponse("cadastro_imovel.html", {"request": request, "pessoa": pessoa_logada})
 
 @router.get("/sair", response_class=RedirectResponse)
 async def get_sair(

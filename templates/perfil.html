@@ -6,32 +6,29 @@
 <form class="row">
     <div class="col-12 col-lg-6">
         <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="nome" placeholder=" " value="Fulano de Tal">
+            <input type="text" class="form-control" id="nome" placeholder=" " value="{{ pessoa.nome }}">
             <label for="nome">Nome Completo</label>
         </div>
         <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="cpf" placeholder=" " value="123.456.789-01">
+            <input type="text" class="form-control" id="cpf" placeholder=" " value="{{ pessoa.cpf }}">
             <label for="cpf">CPF</label>
         </div>
         <div class="form-floating mb-3">
-            <input type="date" class="form-control" id="dataNascimento" placeholder=" " value="2000-02-15">
+            <input type="date" class="form-control" id="dataNascimento" placeholder=" " value="{{ pessoa.data_nascimento }}">
             <label for="dataNascimento">Data de Nascimento</label>
         </div>
         <div class="form-floating mb-3">
-            <textarea id="endereco" class="form-control" style="height: 120px" placeholder=" ">Rua Catatau das Flores, 7
-Bairro Bacurau
-Cachoeiro de Itapemirim/ES
-CEP 29.300-900</textarea>
+            <textarea id="endereco" class="form-control" style="height: 120px" placeholder=" ">{{ pessoa.endereco }}</textarea>
             <label for="endereco">Endereço</label>
         </div>
     </div>
     <div class="col-12 col-lg-6">
         <div class="form-floating mb-3">
-            <input type="email" class="form-control" id="email" placeholder=" " value="fulano@email.com">
+            <input type="email" class="form-control" id="email" placeholder=" " value="{{ pessoa.email }}">
             <label for="email">E-mail</label>
         </div>
         <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="telefone" placeholder=" " value="(28) 99999-8888">
+            <input type="text" class="form-control" id="telefone" placeholder=" " value="{{ pessoa.telefone }}">
             <label for="telefone">Telefone</label>
         </div>
         <div class="form-floating mb-3">
