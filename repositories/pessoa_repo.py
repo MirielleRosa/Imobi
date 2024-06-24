@@ -45,7 +45,7 @@ class PessoaRepo:
             with obter_conexao() as conexao:
                 cursor = conexao.cursor()
                 tuplas = cursor.execute(SQL_OBTER_TODOS).fetchall()
-                pessoas = [pessoa(*t) for t in tuplas]
+                pessoas = [pessoas(*t) for t in tuplas]
                 return pessoas
         except sqlite3.Error as ex:
             print(ex)
@@ -125,7 +125,7 @@ class PessoaRepo:
                 tuplas = cursor.execute(
                     SQL_OBTER_BUSCA, (termo, termo, tamanho_pagina, offset)
                 ).fetchall()
-                pessoas = [pessoa(*t) for t in tuplas]
+                pessoas = [pessoas(*t) for t in tuplas]
                 return pessoas
         except sqlite3.Error as ex:
             print(ex)
