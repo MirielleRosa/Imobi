@@ -108,7 +108,7 @@ def get_entrar(
     )
 
 @router.post("/post_entrar", response_class=JSONResponse)
-async def post_entrar(entrar_dto: EntrarDTO, return_url: str = Query("/")):
+async def post_entrar(entrar_dto: EntrarDTO, return_url: str = Query("/perfil")):
     pessoa_entrou = PessoaRepo.obter_por_email(entrar_dto.email)
     if (
         (not pessoa_entrou)
