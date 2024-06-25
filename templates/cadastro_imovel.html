@@ -18,12 +18,14 @@
             <label for="endereco">Endereço</label>
         </div>
         <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="cidade" name="cidade" placeholder=" ">
+            <select class="form-select" id="cidade" name="cidade_id">
+                <option value="" disabled selected>Selecione a cidade</option>
+                {% for cidade in cidades %}
+                    <option value="{{ cidade.id }}">{{ cidade.nome }}, {{ cidade.estado }}</option>
+                {% endfor %}
+            </select>
             <label for="cidade">Cidade</label>
-        </div>
-        <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="estado" name="estado" placeholder=" ">
-            <label for="estado">Estado</label>
+            <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#modalCidade">Adicionar nova cidade</button>
         </div>
     </div>
     <div class="col-12 col-lg-6">
@@ -44,14 +46,34 @@
             <label for="banheiros">Número de Banheiros</label>
         </div>
         <div class="mb-3">
-            <label for="imagem" class="form-label">Imagem do Imóvel</label>
-            <input class="form-control" type="file" id="imagem" name="imagem">
+            <input type="file" id="imagem" name="file">
         </div>
         <div>
             <button type="submit" class="btn btn-dark btn-lg">Cadastrar Imóvel</button>
         </div>
     </div>
 </form>
+<div class="modal fade" id="modalCidade" tabindex="-1" aria-labelledby="modalCidadeLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalCidadeLabel">Adicionar Nova Cidade</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-floating mb-3">
+          <input type="text" class="form-control" id="nomeCidade" name="nomeCidade" placeholder=" ">
+          <label for="nomeCidade">Nome da Cidade</label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+        <button type="button" class="btn btn-primary" id="salvarCidade">Salvar Cidade</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script src="/static/js/formToJson.js"></script>
 <script src="/static/js/inputMasks.js"></script>
 {% endblock %}
