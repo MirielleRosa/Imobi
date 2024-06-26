@@ -7,6 +7,7 @@ from jsonschema import ValidationError
 
 from dtos.entrar_dto import EntrarDTO
 from dtos.nova_pessoa_dto import NovaPessoaDTO
+from repositories.imovel_repo import ImovelRepo
 from util.ler_html import ler_html
 from models.pessoa_model import Pessoa
 from repositories.pessoa_repo import PessoaRepo
@@ -25,13 +26,14 @@ async def get_html(arquivo: str):
 
 @router.get("/")
 def get_root(request: Request, pessoa_logada: Pessoa = Depends(obter_pessoa_logada)):
-    # imoveis = ImoveisRepo.obter_todos()
+    imoveis = ImovelRepo.obter_todos()
+    print(imoveis)
     return templates.TemplateResponse(
         "pages/index.html",
         {
             "request": request,
             "pessoa": pessoa_logada,
-            # "imoveis": imoveis,
+            "imoveis": imoveis,
         },
     )
 
