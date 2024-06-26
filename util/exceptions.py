@@ -5,8 +5,10 @@ from fastapi.templating import Jinja2Templates
 from models.pessoa_model import Pessoa
 from util.cookies import adicionar_mensagem_erro
 from util.auth import obter_pessoa_logada
+from util.templates import obter_jinja_templates
 
-templates = Jinja2Templates(directory="templates")
+templates = obter_jinja_templates("templates")
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
@@ -42,7 +44,7 @@ def configurar_excecoes(app: FastAPI):
         request: Request, pessoa_logada=Depends(obter_pessoa_logada)
     ):
         return templates.TemplateResponse(
-            "404.html", {"request": request, "pessoa": pessoa_logada}
+            "pages/404.html", {"request": request, "pessoa": pessoa_logada}
         )
 
     @app.exception_handler(HTTPException)
@@ -58,7 +60,7 @@ def configurar_excecoes(app: FastAPI):
             "detail": "Erro na requisição HTTP.",
         }
         return templates.TemplateResponse(
-            "erro.html", view_model, status_code=ex.status_code
+            "pages/erro.html", view_model, status_code=ex.status_code
         )
 
     @app.exception_handler(Exception)
@@ -73,4 +75,4 @@ def configurar_excecoes(app: FastAPI):
             "pessoa": pessoa_logada,
             "detail": "Erro interno do servidor.",
         }
-        return templates.TemplateResponse("erro.html", view_model, status_code=500)
+        return templates.TemplateResponse("pages/erro.html", view_model, status_code=500)

@@ -6,27 +6,30 @@ from fastapi.templating import Jinja2Templates
 
 from dtos.entrar_dto import EntrarDTO
 from dtos.nova_pessoa_dto import NovaPessoaDTO
-from ler_html import ler_html
+from util.ler_html import ler_html
 from models.pessoa_model import Pessoa
 from repositories.pessoa_repo import PessoaRepo
 from util.auth import conferir_senha, gerar_token, obter_hash_senha, obter_pessoa_logada
 from util.cookies import adicionar_cookie_auth, adicionar_mensagem_sucesso
 from util.pydantic import create_validation_errors
+from util.templates import obter_jinja_templates
 
 router = APIRouter()
+templates = obter_jinja_templates("templates/main")
 
-templates = Jinja2Templates(directory="templates")
+
 @router.get("/html/{arquivo}")
-def get_html(arquivo: str):
+async def get_html(arquivo: str):
     response = HTMLResponse(ler_html(arquivo))
     return response
+
 
 
 @router.get("/")
 def get_root(request: Request, pessoa_logada: Pessoa = Depends(obter_pessoa_logada)):
     # imoveis = ImoveisRepo.obter_todos()
     return templates.TemplateResponse(
-        "index.html",
+        "pages/index.html",
         {
             "request": request,
             "pessoa": pessoa_logada,
@@ -39,7 +42,7 @@ def get_cadastro(
     request: Request, pessoa_logada: Pessoa = Depends(obter_pessoa_logada)
 ):
     return templates.TemplateResponse(
-        "cadastro.html",
+        "pages/cadastro.html",
         {
             "request": request,
             "pessoa": pessoa_logada,
@@ -51,7 +54,7 @@ def get_entrar(
     request: Request, pessoa_logada: Pessoa = Depends(obter_pessoa_logada)
 ):
     return templates.TemplateResponse(
-        "entrar.html",
+        "pages/entrar.html",
         {
             "request": request,
             "pessoa": pessoa_logada,
@@ -80,7 +83,7 @@ async def post_cadastro(pessoa: NovaPessoaDTO):
     if not nova_pessoa or not nova_pessoa.id:
         raise HTTPException(status_code=400, detail="Erro ao cadastrar corretor.")
     
-    return {"redirect": {"url": "/cadastro_realizado"}}
+    return {"redirect": {"url": "pages/cadastro_realizado"}}
 
 
 @router.get("/cadastro_realizado")

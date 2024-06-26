@@ -9,27 +9,29 @@ from repositories.pessoa_repo import PessoaRepo
 from util.auth import checar_autorizacao, obter_pessoa_logada
 from util.cookies import adicionar_mensagem_sucesso
 import uuid
-import firebaseconfig
+import util.firebaseconfig as firebaseconfig
+from util.templates import obter_jinja_templates
 
 router = APIRouter()
 
-templates = Jinja2Templates(directory="templates")
+router = APIRouter()
+templates = obter_jinja_templates("templates/pessoa")
 
 @router.get("/perfil")
-def get_root(request: Request, pessoa_logada: Pessoa = Depends(obter_pessoa_logada)):
+def get_perfil(request: Request, pessoa_logada: Pessoa = Depends(obter_pessoa_logada)):
     checar_autorizacao(pessoa_logada)
-    return templates.TemplateResponse("perfil.html", {"request": request, "pessoa": pessoa_logada})
+    return templates.TemplateResponse("pages/perfil.html", {"request": request, "pessoa": pessoa_logada})
 
 @router.get("/imoveis")
-def get_root(request: Request, pessoa_logada: Pessoa = Depends(obter_pessoa_logada)):
+def get_imoveis(request: Request, pessoa_logada: Pessoa = Depends(obter_pessoa_logada)):
     checar_autorizacao(pessoa_logada)
-    return templates.TemplateResponse("imoveis.html", {"request": request, "pessoa": pessoa_logada})
+    return templates.TemplateResponse("pages/imoveis.html", {"request": request, "pessoa": pessoa_logada})
 
 @router.get("/cadastro_imovel")
-def get_root(request: Request, pessoa_logada: Pessoa = Depends(obter_pessoa_logada)):
+def get_cadastro_imovel(request: Request, pessoa_logada: Pessoa = Depends(obter_pessoa_logada)):
     checar_autorizacao(pessoa_logada)
     cidades = CidadeRepo.obter_todos()
-    return templates.TemplateResponse("cadastro_imovel.html", {"request": request, "pessoa": pessoa_logada, "cidades": cidades})
+    return templates.TemplateResponse("pages/cadastro_imovel.html", {"request": request, "pessoa": pessoa_logada, "cidades": cidades})
 
 @router.get("/sair", response_class=RedirectResponse)
 async def get_sair(

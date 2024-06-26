@@ -14,7 +14,7 @@ def adicionar_mensagem_alerta(response, mensagem):
 
 def adicionar_mensagem_erro(response, mensagem):
     response.set_cookie(
-        key="message_danger", value=mensagem, max_age=1, httponly=True, samesite="lax"
+        key="includes/message_danger.html", value=mensagem, max_age=1, httponly=True, samesite="lax"
     )
     return response
 

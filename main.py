@@ -12,10 +12,8 @@ PessoaRepo.criar_tabela()
 CidadeRepo.criar_tabela()
 ImovelRepo.criar_tabela()
 
-# Inserir as cidades do arquivo JSON no banco de dados
-CidadeRepo.inserir_cidades_json("sql/cidades.json")
+CidadeRepo.inserir_cidades_json("sql/json/cidades.json")
 
-# Configuração do FastAPI
 app = FastAPI()
 app.middleware(middleware_type="http")(atualizar_cookie_autenticacao)
 configurar_excecoes(app)
@@ -23,6 +21,5 @@ app.mount(path="/static", app=StaticFiles(directory="static"), name="static")
 app.include_router(main_routes.router)
 app.include_router(pessoa_routes.router)
 
-# Executar o aplicativo FastAPI
 if __name__ == "__main__":
     uvicorn.run(app="main:app", port=8000, reload=True)
