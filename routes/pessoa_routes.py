@@ -15,6 +15,7 @@ from util.templates import obter_jinja_templates
 from pathlib import Path
 
 
+
 router = APIRouter()
 
 router = APIRouter()
@@ -67,11 +68,20 @@ async def post_cadastro_imovel(
             raise HTTPException(status_code=400, detail="Cidade não selecionada ou inválida.")
         
         file_name = f"{uuid.uuid4()}.png"
-        image_path = UPLOAD_DIR / file_name
+        image_path = f"images/{file_name}"
         
-        os.makedirs(UPLOAD_DIR, exist_ok=True)
-        with open(image_path, "wb") as buffer:
+        # Salva o arquivo temporariamente
+        with open(file_name, "wb") as buffer:
             buffer.write(await imagem.read())
+        
+        # Faz o upload da imagem para o Firebase Storage
+        firebaseconfig.storage.child(image_path).put(file_name)
+        
+        # Obtém a URL da imagem
+        image_url = firebaseconfig.storage.child(image_path).get_url(None)
+        
+        # Remove o arquivo temporário
+        os.remove(file_name)
 
         novo_imovel = Imovel(
             titulo=dados.get("titulo"),
@@ -81,7 +91,7 @@ async def post_cadastro_imovel(
             area=dados.get("area"),
             quartos=dados.get("quartos"),
             banheiros=dados.get("banheiros"),
-            imagem=str(file_name),  # Salve o caminho da imagem
+            imagem=image_url,  # Salva a URL da imagem
             pessoa_id=pessoa_logada.id,
             cidade_id=cidade_id
         )

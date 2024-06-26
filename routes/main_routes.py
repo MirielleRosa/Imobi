@@ -1,4 +1,4 @@
-import math
+from datetime import datetime
 from sqlite3 import DatabaseError
 from fastapi import APIRouter, Depends, Form, HTTPException, Query, Request, status
 from fastapi.responses import HTMLResponse, JSONResponse
@@ -62,20 +62,51 @@ def get_entrar(
     )
 
 @router.post("/post_cadastro", response_class=JSONResponse)
-async def post_cadastro(pessoa: NovaPessoaDTO):
-    pessoa_data = pessoa.model_dump(exclude={"confirmacao_senha"})
-    pessoa_data["senha"] = obter_hash_senha(pessoa_data["senha"])
+async def post_cadastro(
+    nome: str = Form(...),
+    email: str = Form(...),
+    senha: str = Form(...),
+    confirmacao_senha: str = Form(...),
+    telefone: str = Form(...),
+    cpf: str = Form(...),
+    endereco: str = Form(...),
+    data_nascimento: str = Form(...)
+):
+    if senha != confirmacao_senha:
+        return JSONResponse(
+            content=create_validation_errors(
+                {"senha": senha, "confirmacao_senha": confirmacao_senha},
+                ["senha", "confirmacao_senha"],
+                ["As senhas não coincidem.", "As senhas não coincidem."]
+            ),
+            status_code=status.HTTP_400_BAD_REQUEST
+        )
+
+    try:
+        data_nascimento = datetime.strptime(data_nascimento, "%Y-%m-%d")
+    except ValueError:
+        raise HTTPException(status_code=400, detail="Data de nascimento inválida. Use o formato AAAA-MM-DD.")
+
+    pessoa_data = {
+        "nome": nome,
+        "cpf": cpf,
+        "data_nascimento": data_nascimento,
+        "endereco": endereco,
+        "telefone": telefone,
+        "email": email,
+        "senha": obter_hash_senha(senha),
+    }
 
     # Verificar se o email já existe
-    if PessoaRepo.obter_por_email(pessoa_data["email"]):
+    if PessoaRepo.obter_por_email(email):
         raise HTTPException(status_code=400, detail="Email já está em uso.")
     
     # Verificar se o telefone já existe
-    if PessoaRepo.obter_por_telefone(pessoa_data["telefone"]):
+    if PessoaRepo.obter_por_telefone(telefone):
         raise HTTPException(status_code=400, detail="Telefone já está em uso.")
     
     # Verificar se o CPF já existe
-    if PessoaRepo.obter_por_cpf(pessoa_data["cpf"]):
+    if PessoaRepo.obter_por_cpf(cpf):
         raise HTTPException(status_code=400, detail="CPF já está em uso.")
     
     # Inserir a nova pessoa
@@ -83,7 +114,8 @@ async def post_cadastro(pessoa: NovaPessoaDTO):
     if not nova_pessoa or not nova_pessoa.id:
         raise HTTPException(status_code=400, detail="Erro ao cadastrar corretor.")
     
-    return {"redirect": {"url": "pages/cadastro_realizado"}}
+    return {"redirect": {"url": "/cadastro_realizado"}}
+
 
 
 @router.get("/cadastro_realizado")
@@ -91,7 +123,7 @@ def get_cadastro_realizado(
     request: Request, pessoa_logada: Pessoa = Depends(obter_pessoa_logada)
 ):
     return templates.TemplateResponse(
-        "cadastro_confirmado.html",
+        "pages/cadastro_confirmado.html",
         {
             "request": request,
             "pessoa": pessoa_logada,

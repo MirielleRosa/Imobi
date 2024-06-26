@@ -6,23 +6,31 @@ function initializeJsonForm() {
             event.preventDefault(); // Impede o envio padrão do formulário
 
             var formData = new FormData(form);
+            var jsonData = {};
+
+            formData.forEach(function (value, key) {
+                jsonData[key] = value;
+            });
 
             fetch(form.action, {
                 method: form.method,
-                body: formData
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(jsonData)
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.detail) {
-                    handleFormErrors(form, data.detail);
-                }
-                if (data.redirect) {
-                    handleRedirectResponse(data.redirect);
-                }
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
+                .then(response => response.json())
+                .then(data => {
+                    if (data.detail) {
+                        handleFormErrors(form, data.detail);
+                    }
+                    if (data.redirect) {
+                        handleRedirectResponse(data.redirect);
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
         });
     }
 }
