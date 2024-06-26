@@ -1,4 +1,5 @@
-from fastapi import APIRouter, Depends, HTTPException, Request, status, File, UploadFile
+import os
+from fastapi import APIRouter, Depends, Form, HTTPException, Request, status, File, UploadFile
 from fastapi.responses import JSONResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from models.imovel_model import Imovel
@@ -11,6 +12,8 @@ from util.cookies import adicionar_mensagem_sucesso
 import uuid
 import util.firebaseconfig as firebaseconfig
 from util.templates import obter_jinja_templates
+from pathlib import Path
+
 
 router = APIRouter()
 
@@ -45,20 +48,30 @@ async def get_sair(
     adicionar_mensagem_sucesso(response, "Saída realizada com sucesso.")
     return response
 
+UPLOAD_DIR = Path("static/img")
+
 @router.post("/post_cadastro_imovel", response_class=JSONResponse)
-async def post_cadastro_imovel(request: Request, pessoa_logada: Pessoa = Depends(obter_pessoa_logada)):
+async def post_cadastro_imovel(
+    request: Request,
+    imagem: UploadFile = File(...),
+    pessoa_logada: Pessoa = Depends(obter_pessoa_logada)
+):
     checar_autorizacao(pessoa_logada)
     
-    dados = await request.json()
+    form_data = await request.form()
+    dados = {key: form_data[key] for key in form_data}
+    
     try:
-        imagem = dados.get("imagem", "")
-        if isinstance(imagem, dict):
-            imagem = ""
-
-        # Verifique se o campo cidade_id está no JSON
         cidade_id = dados.get("cidade_id")
         if not cidade_id:
             raise HTTPException(status_code=400, detail="Cidade não selecionada ou inválida.")
+        
+        file_name = f"{uuid.uuid4()}.png"
+        image_path = UPLOAD_DIR / file_name
+        
+        os.makedirs(UPLOAD_DIR, exist_ok=True)
+        with open(image_path, "wb") as buffer:
+            buffer.write(await imagem.read())
 
         novo_imovel = Imovel(
             titulo=dados.get("titulo"),
@@ -68,12 +81,13 @@ async def post_cadastro_imovel(request: Request, pessoa_logada: Pessoa = Depends
             area=dados.get("area"),
             quartos=dados.get("quartos"),
             banheiros=dados.get("banheiros"),
-            imagem=imagem,
+            imagem=str(file_name),  # Salve o caminho da imagem
             pessoa_id=pessoa_logada.id,
-            cidade_id=cidade_id  # Use cidade_id diretamente
+            cidade_id=cidade_id
         )
 
-        print(dados)
+        print(novo_imovel)
+
     except KeyError as e:
         raise HTTPException(status_code=400, detail=f"Campo obrigatório ausente: {e}")
 

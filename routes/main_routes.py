@@ -1,6 +1,6 @@
 import math
 from sqlite3 import DatabaseError
-from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
+from fastapi import APIRouter, Depends, Form, HTTPException, Query, Request, status
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.templating import Jinja2Templates
 
@@ -111,27 +111,34 @@ def get_entrar(
     )
 
 @router.post("/post_entrar", response_class=JSONResponse)
-async def post_entrar(entrar_dto: EntrarDTO, return_url: str = Query("/perfil")):
-    pessoa_entrou = PessoaRepo.obter_por_email(entrar_dto.email)
+async def post_entrar(
+    email: str = Form(...),
+    senha: str = Form(...),
+    return_url: str = Query("/perfil")
+):
+    pessoa_entrou = PessoaRepo.obter_por_email(email)
     if (
         (not pessoa_entrou)
         or (not pessoa_entrou.senha)
-        or (not conferir_senha(entrar_dto.senha, pessoa_entrou.senha))
+        or (not conferir_senha(senha, pessoa_entrou.senha))
     ):
         return JSONResponse(
             content=create_validation_errors(
-                entrar_dto,
+                {"email": email, "senha": senha},
                 ["email", "senha"],
                 ["Credenciais inválidas.", "Credenciais inválidas."],
             ),
             status_code=status.HTTP_404_NOT_FOUND,
         )
+    
     token = gerar_token()
     if not PessoaRepo.alterar_token(pessoa_entrou.id, token):
         raise DatabaseError(
             "Não foi possível alterar o token do corretor no banco de dados."
         )
+    
     response = JSONResponse(content={"redirect": {"url": return_url}})
     adicionar_mensagem_sucesso(response, "Entrada efetuada com sucesso.")
     adicionar_cookie_auth(response, token)
     return response
+
