@@ -37,6 +37,18 @@ def get_root(request: Request, pessoa_logada: Pessoa = Depends(obter_pessoa_loga
         },
     )
 
+@router.get("/imovel/{id:int}")
+async def get_imovel(request: Request, id: int):
+    imovel = ImovelRepo.obter_um(id)
+    return templates.TemplateResponse(
+        "pages/imovel.html",
+        {
+            "request": request,
+            "imovel": imovel,
+        },
+    )
+
+
 @router.get("/cadastro")
 def get_cadastro(
     request: Request, pessoa_logada: Pessoa = Depends(obter_pessoa_logada)
