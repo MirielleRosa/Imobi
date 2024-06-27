@@ -9,6 +9,7 @@ pillow
 bcrypt
 mercadopago
 python-dotenv
+pydantic
 firebase
 firebase-admin
 pyrebase4==4.7.1
