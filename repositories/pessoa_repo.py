@@ -29,7 +29,8 @@ class PessoaRepo:
                         pessoa.telefone,
                         pessoa.email,
                         pessoa.senha,
-                        pessoa.admin,
+                        pessoa.imagem_perfil,
+                        pessoa.descricao,
                     ),
                 )
                 if cursor.rowcount > 0:
@@ -63,11 +64,14 @@ class PessoaRepo:
                         pessoa.cpf,
                         pessoa.data_nascimento,
                         pessoa.endereco,
-                        pessoa.email,
                         pessoa.telefone,
+                        pessoa.email,
+                        pessoa.imagem_perfil,
+                        pessoa.descricao,
                         pessoa.id,
                     ),
                 )
+                conexao.commit()  # Certifique-se de commitar a transação
                 return cursor.rowcount > 0
         except sqlite3.Error as ex:
             print(ex)
@@ -145,27 +149,27 @@ class PessoaRepo:
             print(ex)
             return None
 
-    @classmethod
-    def tornar_admin(cls, id: int) -> bool:
-        try:
-            with obter_conexao() as conexao:
-                cursor = conexao.cursor()
-                cursor.execute(SQL_TORNAR_ADMIN, (id,))
-                return cursor.rowcount > 0
-        except sqlite3.Error as ex:
-            print(ex)
-            return False
+    # @classmethod
+    # def tornar_admin(cls, id: int) -> bool:
+    #     try:
+    #         with obter_conexao() as conexao:
+    #             cursor = conexao.cursor()
+    #             cursor.execute(SQL_TORNAR_ADMIN, (id,))
+    #             return cursor.rowcount > 0
+    #     except sqlite3.Error as ex:
+    #         print(ex)
+    #         return False
 
-    @classmethod
-    def revogar_admin(cls, id: int) -> bool:
-        try:
-            with obter_conexao() as conexao:
-                cursor = conexao.cursor()
-                cursor.execute(SQL_REVOGAR_ADMIN, (id,))
-                return cursor.rowcount > 0
-        except sqlite3.Error as ex:
-            print(ex)
-            return False
+    # @classmethod
+    # def revogar_admin(cls, id: int) -> bool:
+    #     try:
+    #         with obter_conexao() as conexao:
+    #             cursor = conexao.cursor()
+    #             cursor.execute(SQL_REVOGAR_ADMIN, (id,))
+    #             return cursor.rowcount > 0
+    #     except sqlite3.Error as ex:
+    #         print(ex)
+    #         return False
 
     @classmethod
     def obter_por_email(cls, email: str) -> Optional[Pessoa]:

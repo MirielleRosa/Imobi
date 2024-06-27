@@ -13,5 +13,6 @@ class Pessoa:
     telefone: Optional[str] = None
     email: Optional[str] = None
     senha: Optional[str] = None
-    admin: Optional[bool] = True
+    imagem_perfil: Optional[str] = None
+    descricao: Optional[str] = None
     token: Optional[str] = None

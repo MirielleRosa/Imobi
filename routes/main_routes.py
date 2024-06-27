@@ -27,7 +27,6 @@ async def get_html(arquivo: str):
 @router.get("/")
 def get_root(request: Request, pessoa_logada: Pessoa = Depends(obter_pessoa_logada)):
     imoveis = ImovelRepo.obter_todos()
-    print(imoveis)
     return templates.TemplateResponse(
         "pages/index.html",
         {

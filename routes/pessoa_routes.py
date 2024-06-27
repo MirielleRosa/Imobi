@@ -1,3 +1,5 @@
+from ast import parse
+from datetime import date, datetime
 import os
 from fastapi import APIRouter, Depends, Form, HTTPException, Request, status, File, UploadFile
 from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
@@ -18,19 +20,71 @@ UPLOAD_DIR = Path("static/img")
 router = APIRouter()
 templates = obter_jinja_templates("templates/pessoa")
 
-@router.get("/perfil", response_class=HTMLResponse)
-def get_perfil(
+@router.get("/perfil")
+def get_perfil(request: Request, pessoa_logada: Pessoa = Depends(obter_pessoa_logada)):
+    checar_autorizacao(pessoa_logada)
+    return templates.TemplateResponse("pages/perfil.html", {"request": request, "pessoa": pessoa_logada})
+
+
+@router.post("/alterar_perfil")
+async def post_alterar_perfil(
     request: Request,
+    imagem: UploadFile = File(None),
     pessoa_logada: Pessoa = Depends(obter_pessoa_logada)
 ):
     checar_autorizacao(pessoa_logada)
-    return templates.TemplateResponse(
-        "pages/perfil.html",
-        {
-            "request": request,
-            "pessoa": pessoa_logada,
-        },
-    )
+
+    form_data = await request.form()
+    dados = {key: form_data[key] for key in form_data}
+
+    try:
+        # Verifique se uma nova imagem foi recebida
+        if imagem and imagem.filename:
+            file_name = f"{uuid.uuid4()}.png"
+            image_path = f"imagens_perfil/{file_name}"
+
+            with open(file_name, "wb") as buffer:
+                buffer.write(await imagem.read())
+
+            firebaseconfig.storage.child(image_path).put(file_name)
+
+            image_url = firebaseconfig.storage.child(image_path).get_url(None)
+
+            os.remove(file_name)
+        else:
+            image_url = pessoa_logada.imagem_perfil  # Mantém a URL da imagem existente
+
+        data_nascimento_str = dados.get("data_nascimento")
+        if data_nascimento_str:
+            try:
+                # Convertendo a string data_nascimento_str para um objeto date
+                data_nascimento = datetime.strptime(data_nascimento_str, "%Y-%m-%d").date()
+            except ValueError as e:
+                raise HTTPException(status_code=400, detail=f"Erro ao converter data de nascimento: {str(e)}")
+
+            # Atualizando os dados do perfil
+            alterar_perfil = Pessoa(
+                id=pessoa_logada.id,
+                nome=dados.get("nome"),
+                cpf=dados.get("cpf"),
+                data_nascimento=data_nascimento,
+                endereco=dados.get("endereco"),
+                telefone=dados.get("telefone"),
+                email=dados.get("email"),
+                senha=pessoa_logada.senha,  # Manter a senha atual
+                imagem_perfil=image_url,  # Usar a URL da nova imagem ou a existente
+                descricao=dados.get("descricao")
+            )
+
+            print(alterar_perfil)
+
+            # Atualizar os dados do perfil no banco de dados
+            PessoaRepo.alterar(alterar_perfil)
+
+    except KeyError as e:
+        raise HTTPException(status_code=400, detail=f"Campo obrigatório ausente: {e}")
+
+    return RedirectResponse(url="/perfil", status_code=status.HTTP_303_SEE_OTHER)
 
 @router.get("/imoveis")
 def get_imoveis(request: Request, pessoa_logada: Pessoa = Depends(obter_pessoa_logada)):
@@ -60,7 +114,7 @@ async def post_cadastro_imovel(
             raise HTTPException(status_code=400, detail="Cidade não selecionada ou inválida.")
         
         file_name = f"{uuid.uuid4()}.png"
-        image_path = f"images/{file_name}"
+        image_path = f"imagens_imoveis/{file_name}"
         
         with open(file_name, "wb") as buffer:
             buffer.write(await imagem.read())

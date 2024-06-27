@@ -3,45 +3,60 @@
 {% block conteudo %}
 <h1 class="display-5"><b>Meu Perfil</b></h1>
 <hr>
-<form class="row">
-    <div class="col-12 col-lg-6">
-        <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="nome" placeholder=" " value="{{ pessoa.nome }}">
-            <label for="nome">Nome Completo</label>
-        </div>
-        <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="cpf" placeholder=" " value="{{ pessoa.cpf }}">
-            <label for="cpf">CPF</label>
-        </div>
-        <div class="form-floating mb-3">
-            <input type="date" class="form-control" id="dataNascimento" placeholder=" " value="{{ pessoa.data_nascimento }}">
-            <label for="dataNascimento">Data de Nascimento</label>
-        </div>
-        <div class="form-floating mb-3">
-            <textarea id="endereco" class="form-control" style="height: 120px" placeholder=" ">{{ pessoa.endereco }}</textarea>
-            <label for="endereco">Endereço</label>
+
+<form class="row json-form" action="/alterar_perfil" method="post" enctype="multipart/form-data">
+    <div class="text-center mb-4">
+        <div class="position-relative m-4">
+            <img id="foto-perfil" src="{% if pessoa.imagem_perfil %}{{ pessoa.imagem_perfil }}{% else %}/static/img/imagem-perfil.png{% endif %}" alt="Foto de Perfil" class="rounded-circle border border-secondary mb-5" style="width: 150px; height: 150px; object-fit: cover;">
+            <input type="file" id="imagem" name="imagem" class="d-none" accept="image/*" onchange="previewImagem(event)">
+            <button type="button" class="btn btn-primary position-absolute" style="bottom: 0; left: 50%; transform: translateX(-50%);" onclick="document.getElementById('imagem').click();">Alterar Foto</button>
         </div>
     </div>
     <div class="col-12 col-lg-6">
         <div class="form-floating mb-3">
-            <input type="email" class="form-control" id="email" placeholder=" " value="{{ pessoa.email }}">
+            <input type="text" name="nome" class="form-control" id="nome" placeholder=" " value="{{ pessoa.nome }}">
+            <label for="nome">Nome Completo</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="cpf" name="cpf" data-mask="cpf" placeholder=" " value="{{ pessoa.cpf }}">
+            <label for="cpf">CPF</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input type="date" name="data_nascimento" class="form-control" id="dataNascimento" placeholder=" " value="{{ pessoa.data_nascimento }}">
+            <label for="dataNascimento">Data de Nascimento</label>
+        </div>
+        <div class="form-floating mb-3">
+            <textarea id="endereco" name="endereco" class="form-control" style="height: 120px" placeholder=" ">{{ pessoa.endereco }}</textarea>
+            <label for="endereco">Endereço</label>
+        </div>
+        <div class="form-floating mb-3">
+            <textarea id="descricao" name="descricao" class="form-control" style="height: 120px" placeholder=" ">{{ pessoa.descricao if pessoa.descricao is not none else '' }}</textarea>
+            <label for="descricao">Descrição</label>
+        </div>
+    </div>
+    <div class="col-12 col-lg-6">
+        <div class="form-floating mb-3">
+            <input type="email" name="email" class="form-control" id="email" placeholder=" " value="{{ pessoa.email }}">
             <label for="email">E-mail</label>
         </div>
         <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="telefone" placeholder=" " value="{{ pessoa.telefone }}">
+            <input type="text" class="form-control" id="telefone" name="telefone" data-mask="telefone" placeholder=" " value="{{ pessoa.telefone }}">
             <label for="telefone">Telefone</label>
         </div>
-        <div class="form-floating mb-3">
+        <!-- <div class="form-floating mb-3">
             <input type="password" class="form-control" id="senha" placeholder=" ">
             <label for="senha">Senha</label>
         </div>
         <div class="form-floating mb-3">
             <input type="password" class="form-control" id="confsenha" placeholder=" ">
             <label for="confsenha">Confirmação de Senha</label>
-        </div>
+        </div> -->
         <div>
             <button class="btn btn-dark btn-lg" type="submit">Alterar Meu Cadastro!</button>
         </div>
     </div>
 </form>
+<script src="/static/js/image-form.js"></script>
+<script src="/static/js/form.js"></script>
+<script src="/static/js/inputMasks.js"></script>
 {% endblock %}

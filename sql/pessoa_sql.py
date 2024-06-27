@@ -8,24 +8,26 @@ SQL_CRIAR_TABELA = """
         telefone TEXT NOT NULL UNIQUE,
         email TEXT NOT NULL UNIQUE,
         senha TEXT NOT NULL,
-        admin BOOLEAN NOT NULL,
-        token TEXT)
+        imagem_perfil TEXT,
+        descricao TEXT,
+        token TEXT
+    );
 """
 
 SQL_INSERIR = """
-    INSERT INTO pessoa(nome, cpf, data_nascimento, endereco, telefone, email, senha, admin)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO pessoa(nome, cpf, data_nascimento, endereco, telefone, email, senha, imagem_perfil, descricao)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
 """
 
 SQL_OBTER_TODOS = """
-    SELECT id, nome, cpf, data_nascimento, endereco, telefone, email, admin
+    SELECT id, nome, cpf, data_nascimento, endereco, telefone, email, imagem_perfil, descricao
     FROM pessoa
     ORDER BY nome
 """
 
 SQL_ALTERAR = """
     UPDATE pessoa
-    SET nome=?, cpf=?, data_nascimento=?, endereco=?, telefone=?, email=?
+    SET nome=?, cpf=?, data_nascimento=?, endereco=?, telefone=?, email=?, imagem_perfil=?, descricao=?
     WHERE id=?
 """
 
@@ -41,19 +43,19 @@ SQL_EXCLUIR = """
 """
 
 SQL_OBTER_UM = """
-    SELECT id, nome, cpf, data_nascimento, endereco, telefone, email, admin
+    SELECT id, nome, cpf, data_nascimento, endereco, telefone, email, imagem_perfil, descricao
     FROM pessoa
     WHERE id=?
 """
 
 SQL_OBTER_POR_EMAIL = """
-    SELECT id, nome, cpf, data_nascimento, endereco, telefone, email, senha, admin
+    SELECT id, nome, cpf, data_nascimento, endereco, telefone, email, senha, imagem_perfil, descricao
     FROM pessoa
     WHERE email=?
 """
 
 SQL_OBTER_POR_TOKEN = """
-    SELECT id, nome, cpf, data_nascimento, endereco, telefone, email, admin
+    SELECT id, nome, cpf, data_nascimento, endereco, telefone, email, senha, imagem_perfil, descricao
     FROM pessoa
     WHERE token=?
 """
@@ -73,7 +75,7 @@ SQL_OBTER_QUANTIDADE = """
 """
 
 SQL_OBTER_BUSCA = """
-    SELECT id, nome, cpf, data_nascimento, endereco, telefone, email, admin
+    SELECT id, nome, cpf, data_nascimento, endereco, telefone, email, imagem_perfil, descricao
     FROM pessoa
     WHERE nome LIKE ? OR cpf LIKE ?
     ORDER BY nome
@@ -83,16 +85,4 @@ SQL_OBTER_BUSCA = """
 SQL_OBTER_QUANTIDADE_BUSCA = """
     SELECT COUNT(*) FROM pessoa
     WHERE nome LIKE ? OR cpf LIKE ?
-"""
-
-SQL_TORNAR_ADMIN = """
-    UPDATE pessoa
-    SET admin=1
-    WHERE id=?
-"""
-
-SQL_REVOGAR_ADMIN = """
-    UPDATE pessoa
-    SET admin=0
-    WHERE id=?
 """
