@@ -1,5 +1,5 @@
 # Usa a imagem oficial do Python como imagem pai
-FROM python:3.12.4
+FROM python:3.12.0
 # Define o diretório de trabalho no contêiner
 WORKDIR /
 # Copia os arquivos de dependências e instalar as dependências
