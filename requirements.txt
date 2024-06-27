@@ -8,8 +8,8 @@ python-multipart
 pillow
 bcrypt
 mercadopago
-python-dotenv
 pydantic
+python-dotenv
 firebase
 firebase-admin
 pyrebase4==4.7.1
