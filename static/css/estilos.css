@@ -1,3 +1,57 @@
+:root {
+    --bs-primary: #091638 !important;
+    --bs-danger: #1C3988 !important; 
+    --bs-light: #F3F3FA !important; 
+    --bs-dark: #141B2D !important;
+    --bs-white: #ffffff !important; 
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Merriweather:wght@700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap");
+
+.bg-primary {
+    background-color: var(--bs-primary) !important;
+}
+
+.bg-danger {
+    background-color: var(--bs-danger) !important;
+}
+
+.bg-light {
+    background-color: var(--bs-light) !important;
+}
+
+.bg-dark {
+    background-color: var(--bs-dark) !important;
+}
+
+.bg-white {
+    background-color: var(--bs-white) !important;
+}
+
+.btn-primary {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+}
+
+.btn-danger {
+    background-color: var(--bs-danger);
+    border-color: var(--bs-danger);
+}
+
+.btn-primary {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+}
+
 .page-link {
     color: var(--bs-danger);
     background-color: var(--bs-white);
@@ -38,4 +92,29 @@
     line-clamp: 1;
     -webkit-box-orient: vertical;
     overflow: hidden;
+}
+
+.text-primary {
+    color: var(--bs-primary) !important;
+}
+
+.text-danger {
+    color: var(--bs-danger) !important;
+}
+
+.text-light {
+    color: var(--bs-light) !important;
+}
+
+.text-dark {
+    color: var(--bs-dark) !important;
+}
+
+.text-white {
+    color: var(--bs-white) !important;
+}
+
+.h1-topo {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: bold;
 }
