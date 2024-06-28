@@ -32,7 +32,10 @@ SELECT * FROM imovel;
 """
 
 SQL_OBTER_UM_IMOVEL = """
-SELECT * FROM imovel WHERE id = ?;
+SELECT imovel.*, cidade.nome AS nome_cidade, cidade.estado
+FROM imovel
+JOIN cidade ON imovel.cidade_id = cidade.id
+WHERE imovel.id = ?;
 """
 
 SQL_EXCLUIR_IMOVEL = """

@@ -2,6 +2,7 @@
     --bs-primary: #091638 !important;
     --bs-danger: #1C3988 !important; 
     --bs-light: #F3F3FA !important; 
+    --bs-blue: #cfcfcfb2 !important; 
     --bs-dark: #141B2D !important;
     --bs-white: #ffffff !important; 
 }
@@ -20,6 +21,10 @@
 
 .bg-light {
     background-color: var(--bs-light) !important;
+}
+
+.bg-blue {
+    background-color: var(--bs-blue) !important;
 }
 
 .bg-dark {

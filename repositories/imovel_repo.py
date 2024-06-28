@@ -95,6 +95,7 @@ class ImovelRepo:
                 cursor = conexao.cursor()
                 tupla = cursor.execute(SQL_OBTER_UM_IMOVEL, (id,)).fetchone()
                 if tupla:
+                    # Supondo que a classe Imovel tenha sido ajustada para aceitar os novos campos
                     imovel = Imovel(*tupla)
                     return imovel
                 else:
