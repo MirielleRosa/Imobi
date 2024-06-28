@@ -21,13 +21,17 @@ class ImovelRepo:
                     SQL_INSERIR_IMOVEL,
                     (
                         imovel.titulo,
+                        imovel.tipo,
                         imovel.descricao,
                         imovel.endereco,
                         imovel.preco,
                         imovel.area,
                         imovel.quartos,
                         imovel.banheiros,
-                        imovel.imagem,
+                        imovel.garagem,
+                        imovel.piscina,
+                        imovel.imagem_principal,
+                        imovel.imagens_secundarias,
                         imovel.pessoa_id,
                         imovel.cidade_id,
                     ),
@@ -60,13 +64,17 @@ class ImovelRepo:
                     SQL_ALTERAR_IMOVEL,
                     (
                         imovel.titulo,
+                        imovel.tipo,
                         imovel.descricao,
                         imovel.endereco,
                         imovel.preco,
                         imovel.area,
                         imovel.quartos,
                         imovel.banheiros,
-                        imovel.imagem,
+                        imovel.garagem,
+                        imovel.piscina,
+                        imovel.imagem_principal,
+                        imovel.imagens_secundarias,
                         imovel.pessoa_id,
                         imovel.cidade_id,
                         imovel.id,
@@ -95,11 +103,51 @@ class ImovelRepo:
                 cursor = conexao.cursor()
                 tupla = cursor.execute(SQL_OBTER_UM_IMOVEL, (id,)).fetchone()
                 if tupla:
-                    # Supondo que a classe Imovel tenha sido ajustada para aceitar os novos campos
                     imovel = Imovel(*tupla)
                     return imovel
                 else:
-                    return None
+                    print("Nenhum imóvel encontrado.")
+                    return 0  # Return 0 if no results found
         except sqlite3.Error as ex:
-            print(ex)
+            print(f"Erro ao obter quantidade de imóveis: {ex}")
+            return None
+
+    @classmethod
+    def obter_busca(cls, cidade_nome: str, pagina: int, tamanho_pagina: int, ordem: int) -> List[Imovel]:
+        cidade_nome = "%" + cidade_nome + "%"
+        offset = (pagina - 1) * tamanho_pagina
+        
+        try:
+            with obter_conexao() as conexao:
+                cursor = conexao.cursor()
+                print(f"Query de busca: {SQL_OBTER_BUSCA}")  # Verifique a query sendo executada
+                print(f"Parâmetros: {cidade_nome}")  # Verifique os parâmetros sendo passados
+                cursor.execute(SQL_OBTER_BUSCA, (cidade_nome,))
+                tuplas = cursor.fetchall()
+                imoveis = [Imovel(*t) for t in tuplas]
+                print(f"Resultado da busca: {imoveis}")  # Log para verificar os resultados (opcional)
+                return imoveis
+        except sqlite3.Error as ex:
+            print(f"Erro ao buscar imóveis: {ex}")
+            return []
+
+    @classmethod
+    def obter_quantidade_busca(cls, cidade_nome: str) -> Optional[int]:
+        cidade_nome = "%" + cidade_nome + "%"
+        
+        try:
+            with obter_conexao() as conexao:
+                cursor = conexao.cursor()
+                print(f"Query de quantidade: {SQL_OBTER_QUANTIDADE_BUSCA}")  # Verifique a query sendo executada
+                print(f"Parâmetros: {cidade_nome}")  # Verifique os parâmetros sendo passados
+                cursor.execute(SQL_OBTER_QUANTIDADE_BUSCA, (cidade_nome,))
+                resultado = cursor.fetchone()
+                if resultado:
+                    print(f"Quantidade de imóveis encontrados: {resultado[0]}")  # Adicione um log para verificar a contagem
+                    return resultado[0]
+                else:
+                    print("Nenhum imóvel encontrado.")
+                    return 0  # Return 0 if no results found
+        except sqlite3.Error as ex:
+            print(f"Erro ao obter quantidade de imóveis: {ex}")
             return None

@@ -13,14 +13,19 @@
 
 <body class="d-flex flex-column min-vh-100">
     {% include "includes/header.html" %}
-    <main class="container mt-3">
-        <div class="row">            
-            <div class="col-12">
-                {% block topo %}{% endblock %}
+    <main class="bg-gray">
+        <div class="container">
+            <div class="row">            
+                <div class="col-12">
+                    {% block topo %}{% endblock %}
+                </div>
             </div>
         </div>
-        {% block conteudo %}{% endblock %}
     </main>
+    <div class="container">
+        {% block conteudo %}{% endblock %}
+    </div>
+    
     <!-- {% include "includes/footer.html" %} -->
     <script src="/static/lib/bootstrap/bootstrap.bundle.min.js"></script>
 </body>

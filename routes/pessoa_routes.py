@@ -1,9 +1,8 @@
-from ast import parse
-from datetime import date, datetime
+from typing import List
+from datetime import datetime
 import os
-from fastapi import APIRouter, Depends, Form, HTTPException, Request, status, File, UploadFile
-from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
-from fastapi.templating import Jinja2Templates
+from fastapi import APIRouter, Depends, HTTPException, Request, status, File, UploadFile
+from fastapi.responses import RedirectResponse
 from models.imovel_model import Imovel
 from models.pessoa_model import Pessoa
 from repositories.cidade_repo import CidadeRepo
@@ -25,7 +24,6 @@ def get_perfil(request: Request, pessoa_logada: Pessoa = Depends(obter_pessoa_lo
     checar_autorizacao(pessoa_logada)
     return templates.TemplateResponse("pages/perfil.html", {"request": request, "pessoa": pessoa_logada})
 
-
 @router.post("/alterar_perfil")
 async def post_alterar_perfil(
     request: Request,
@@ -38,7 +36,6 @@ async def post_alterar_perfil(
     dados = {key: form_data[key] for key in form_data}
 
     try:
-        # Verifique se uma nova imagem foi recebida
         if imagem and imagem.filename:
             file_name = f"{uuid.uuid4()}.png"
             image_path = f"imagens_perfil/{file_name}"
@@ -52,17 +49,15 @@ async def post_alterar_perfil(
 
             os.remove(file_name)
         else:
-            image_url = pessoa_logada.imagem_perfil  # Mantém a URL da imagem existente
+            image_url = pessoa_logada.imagem_perfil 
 
         data_nascimento_str = dados.get("data_nascimento")
         if data_nascimento_str:
             try:
-                # Convertendo a string data_nascimento_str para um objeto date
                 data_nascimento = datetime.strptime(data_nascimento_str, "%Y-%m-%d").date()
             except ValueError as e:
                 raise HTTPException(status_code=400, detail=f"Erro ao converter data de nascimento: {str(e)}")
 
-            # Atualizando os dados do perfil
             alterar_perfil = Pessoa(
                 id=pessoa_logada.id,
                 nome=dados.get("nome"),
@@ -71,14 +66,13 @@ async def post_alterar_perfil(
                 endereco=dados.get("endereco"),
                 telefone=dados.get("telefone"),
                 email=dados.get("email"),
-                senha=pessoa_logada.senha,  # Manter a senha atual
-                imagem_perfil=image_url,  # Usar a URL da nova imagem ou a existente
+                senha=pessoa_logada.senha, 
+                imagem_perfil=image_url, 
                 descricao=dados.get("descricao")
             )
 
             print(alterar_perfil)
 
-            # Atualizar os dados do perfil no banco de dados
             PessoaRepo.alterar(alterar_perfil)
 
     except KeyError as e:
@@ -100,7 +94,8 @@ def get_cadastro_imovel(request: Request, pessoa_logada: Pessoa = Depends(obter_
 @router.post("/post_cadastro_imovel")
 async def post_cadastro_imovel(
     request: Request,
-    imagem: UploadFile = File(...),
+    imagem_principal: UploadFile = File(...),
+    imagens_secundarias: List[UploadFile] = File(...),
     pessoa_logada: Pessoa = Depends(obter_pessoa_logada)
 ):
     checar_autorizacao(pessoa_logada)
@@ -113,30 +108,56 @@ async def post_cadastro_imovel(
         if not cidade_id:
             raise HTTPException(status_code=400, detail="Cidade não selecionada ou inválida.")
         
-        file_name = f"{uuid.uuid4()}.png"
-        image_path = f"imagens_imoveis/{file_name}"
+        # Processar imagem principal
+        file_name_principal = f"{uuid.uuid4()}.png"
+        image_path_principal = f"imagens_imoveis/{file_name_principal}"
         
-        with open(file_name, "wb") as buffer:
-            buffer.write(await imagem.read())
+        with open(file_name_principal, "wb") as buffer:
+            buffer.write(await imagem_principal.read())
         
-        firebaseconfig.storage.child(image_path).put(file_name)
+        firebaseconfig.storage.child(image_path_principal).put(file_name_principal)
+        image_url_principal = firebaseconfig.storage.child(image_path_principal).get_url(None)
+        os.remove(file_name_principal)
         
-        image_url = firebaseconfig.storage.child(image_path).get_url(None)
-        
-        os.remove(file_name)
+        # Processar imagens secundárias
+        imagens_urls_secundarias = []
+        for imagem in imagens_secundarias:
+            file_name_secundario = f"{uuid.uuid4()}.png"
+            image_path_secundario = f"imagens_imoveis/{file_name_secundario}"
+            
+            with open(file_name_secundario, "wb") as buffer:
+                buffer.write(await imagem.read())
+            
+            firebaseconfig.storage.child(image_path_secundario).put(file_name_secundario)
+            image_url_secundaria = firebaseconfig.storage.child(image_path_secundario).get_url(None)
+            imagens_urls_secundarias.append(image_url_secundaria)
+            
+            os.remove(file_name_secundario)
 
+        
+        imagens_secundarias_str = ",".join(imagens_urls_secundarias)
+
+
+        # Criar o novo imóvel com a imagem principal e as imagens secundárias
         novo_imovel = Imovel(
             titulo=dados.get("titulo"),
+            tipo=dados.get("tipo"),
             descricao=dados.get("descricao"),
             endereco=dados.get("endereco"),
-            preco=dados.get("preco"),
-            area=dados.get("area"),
-            quartos=dados.get("quartos"),
-            banheiros=dados.get("banheiros"),
-            imagem=image_url, 
+            preco=float(dados.get("preco")),
+            area=int(dados.get("area")),
+            quartos=int(dados.get("quartos")),
+            banheiros=int(dados.get("banheiros")),
+            garagem=int(dados.get("garagem")),
+            piscina=bool(dados.get("piscina")),
+            imagem_principal=image_url_principal, 
+            imagens_secundarias=imagens_secundarias_str,  # Usar a string convertida
             pessoa_id=pessoa_logada.id,
-            cidade_id=cidade_id
+            cidade_id=int(cidade_id)
         )
+
+        # Adiciona logs para depuração
+        print("Dados do novo imóvel:", novo_imovel)
 
         imovel_inserido = ImovelRepo.inserir(novo_imovel)
         if not imovel_inserido:

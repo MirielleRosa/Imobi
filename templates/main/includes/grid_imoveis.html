@@ -1,8 +1,8 @@
-<div class="row row-cols mt-2 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5 g-3 mb-3">
+<div class="row row-cols-1 justify-content-start justify-content-md-center justify-content-lg-start row-cols-md-2 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5 gap-3 mt-4">
     {% for i in imoveis %}
     <div class="col card">
         <a href="/imovel/{{i.id}}">
-            <img src="{{i.imagem}}" class="card-img-top mt-2">
+            <img src="{{i.imagem_principal}}" class="card-img-top mt-2">
         </a>
         <div class="card-body">
             <h5 class="card-title">{{i.titulo}}</h5>
