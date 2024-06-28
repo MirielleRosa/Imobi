@@ -12,9 +12,11 @@
                 <li class="nav-item">
                     <a class="nav-link {{ 'active' if pagina_atual == '/' }}" href="/">Principal</a>
                 </li>
+                {% if pessoa and pessoa.nome %}
                 <li class="nav-item">
                     <a class="nav-link {{ 'active' if pagina_atual == '/imoveis' }}" href="/imoveis">Meus Imóveis</a>
                 </li>
+                {% endif %}
                 <li class="nav-item">
                     <a class="nav-link {{ 'active' if pagina_atual == '/sobre' }}">Sobre</a>
                 </li>
