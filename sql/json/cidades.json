@@ -1,57 +1,137 @@
 [
     {
         "id": 1,
-        "nome": "Vitória",
-        "estado": "ES"
+        "nome": "Rio Branco",
+        "estado": "AC"
     },
     {
         "id": 2,
-        "nome": "São Paulo",
-        "estado": "SP"
+        "nome": "Maceió",
+        "estado": "AL"
     },
     {
         "id": 3,
-        "nome": "Rio de Janeiro",
-        "estado": "RJ"
+        "nome": "Macapá",
+        "estado": "AP"
     },
     {
         "id": 4,
-        "nome": "Belo Horizonte",
-        "estado": "MG"
+        "nome": "Manaus",
+        "estado": "AM"
     },
     {
         "id": 5,
-        "nome": "Porto Alegre",
-        "estado": "RS"
-    },
-    {
-        "id": 6,
-        "nome": "Curitiba",
-        "estado": "PR"
-    },
-    {
-        "id": 7,
-        "nome": "Florianópolis",
-        "estado": "SC"
-    },
-    {
-        "id": 8,
         "nome": "Salvador",
         "estado": "BA"
     },
     {
-        "id": 9,
+        "id": 6,
         "nome": "Fortaleza",
         "estado": "CE"
     },
     {
-        "id": 10,
+        "id": 7,
         "nome": "Brasília",
         "estado": "DF"
     },
     {
+        "id": 8,
+        "nome": "Vitória",
+        "estado": "ES"
+    },
+    {
+        "id": 9,
+        "nome": "Goiânia",
+        "estado": "GO"
+    },
+    {
+        "id": 10,
+        "nome": "São Luís",
+        "estado": "MA"
+    },
+    {
         "id": 11,
-        "nome": "Manaus",
-        "estado": "AM"
+        "nome": "Cuiabá",
+        "estado": "MT"
+    },
+    {
+        "id": 12,
+        "nome": "Campo Grande",
+        "estado": "MS"
+    },
+    {
+        "id": 13,
+        "nome": "Belo Horizonte",
+        "estado": "MG"
+    },
+    {
+        "id": 14,
+        "nome": "Belém",
+        "estado": "PA"
+    },
+    {
+        "id": 15,
+        "nome": "João Pessoa",
+        "estado": "PB"
+    },
+    {
+        "id": 16,
+        "nome": "Curitiba",
+        "estado": "PR"
+    },
+    {
+        "id": 17,
+        "nome": "Recife",
+        "estado": "PE"
+    },
+    {
+        "id": 18,
+        "nome": "Teresina",
+        "estado": "PI"
+    },
+    {
+        "id": 19,
+        "nome": "Rio de Janeiro",
+        "estado": "RJ"
+    },
+    {
+        "id": 20,
+        "nome": "Natal",
+        "estado": "RN"
+    },
+    {
+        "id": 21,
+        "nome": "Porto Alegre",
+        "estado": "RS"
+    },
+    {
+        "id": 22,
+        "nome": "Porto Velho",
+        "estado": "RO"
+    },
+    {
+        "id": 23,
+        "nome": "Boa Vista",
+        "estado": "RR"
+    },
+    {
+        "id": 24,
+        "nome": "Florianópolis",
+        "estado": "SC"
+    },
+    {
+        "id": 25,
+        "nome": "São Paulo",
+        "estado": "SP"
+    },
+    {
+        "id": 26,
+        "nome": "Aracaju",
+        "estado": "SE"
+    },
+    {
+        "id": 27,
+        "nome": "Palmas",
+        "estado": "TO"
     }
 ]

@@ -26,8 +26,8 @@ class CidadeRepo:
                     cidade.id = cursor.lastrowid
                     return cidade
         except sqlite3.Error as ex:
-            print(ex)
-            return None
+            print(f"Erro SQL ao inserir cidade: {ex}")
+        return None
     
     @classmethod
     def obter_quantidade(cls) -> Optional[int]:

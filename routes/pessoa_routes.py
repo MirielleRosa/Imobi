@@ -4,6 +4,7 @@ import os
 from fastapi import APIRouter, Depends, Form, HTTPException, Request, status, File, UploadFile
 from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
+from models.cidade_model import Cidade
 from models.imovel_model import Imovel
 from models.pessoa_model import Pessoa
 from repositories.cidade_repo import CidadeRepo
@@ -89,13 +90,36 @@ async def post_alterar_perfil(
 @router.get("/imoveis")
 def get_imoveis(request: Request, pessoa_logada: Pessoa = Depends(obter_pessoa_logada)):
     checar_autorizacao(pessoa_logada)
-    return templates.TemplateResponse("pages/imoveis.html", {"request": request, "pessoa": pessoa_logada})
+    imoveis = ImovelRepo.obter_todos() 
+    return templates.TemplateResponse("pages/imoveis.html", {"request": request, "pessoa": pessoa_logada, "imoveis": imoveis})
+
 
 @router.get("/cadastro_imovel")
 def get_cadastro_imovel(request: Request, pessoa_logada: Pessoa = Depends(obter_pessoa_logada)):
     checar_autorizacao(pessoa_logada)
     cidades = CidadeRepo.obter_todos()
     return templates.TemplateResponse("pages/cadastro_imovel.html", {"request": request, "pessoa": pessoa_logada, "cidades": cidades})
+
+@router.post("/post_cadastro_cidade", response_class=JSONResponse)
+async def post_cadastro_cidade(request: Request, pessoa_logada: Pessoa = Depends(obter_pessoa_logada)):
+    checar_autorizacao(pessoa_logada)
+    
+    form_data = await request.form()
+    nome = form_data.get("nome")
+    estado = form_data.get("estado")
+    
+    nova_cidade = Cidade(nome=nome, estado=estado)  
+
+    try:
+        cidade_inserida = CidadeRepo.inserir(nova_cidade)
+        if cidade_inserida:
+            return RedirectResponse(url="/cadastro_imovel", status_code=status.HTTP_303_SEE_OTHER)
+        else:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Erro ao cadastrar a cidade!")
+    except Exception as e:
+        print(f"Erro ao inserir cidade no banco de dados: {e}")
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Erro interno ao cadastrar cidade")
+
 
 @router.post("/post_cadastro_imovel")
 async def post_cadastro_imovel(

@@ -1,7 +1,43 @@
 {% extends "pages/base.html" %}
 {% block subtitulo %}Meus Imóveis{% endblock %}
 {% block conteudo %}
-<h1 class="display-5"><b>Meus Imóveis</b></h1>
-<hr>
-<a class="" href="/cadastro_imovel">Cadastrar Imóvel</a>
+
+<main class="container py-3">
+    <h1 class="display-5"><b>Meus Imóveis</b></h1>
+    <hr>
+    <table class="table table-striped">
+        <thead class="table-light">
+            <tr>
+                <th class="bg-primary text-light">Imagem</th>
+                <th class="bg-primary text-light">Nome</th>
+                <th class="bg-primary text-light">Preço</th>
+                <th class="bg-primary text-light">Área m²</th>
+                <th class="bg-primary text-light">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for imovel in imoveis %}
+            <tr class="align-middle">
+                <td><img src="{{ imovel.imagem }}" style="width: 64px"></td>
+                <td>{{ imovel.titulo }}</td>
+                <td>R$ {{ "{:,.2f}".format(imovel.preco) }}</td>
+                <td>{{ imovel.area }}</td>
+                <td>
+                    <a href="#" class="btn btn-primary btn-sm d-inline-block"><i class="bi bi-eye-fill"></i></a>
+                    <a href="#" class="btn btn-secondary btn-sm d-inline-block"><i class="bi bi-pencil-fill"></i></a>
+                    <a href="#" class="btn btn-danger btn-sm d-inline-block"><i class="bi bi-trash3-fill"></i></a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="5" class="text-end">
+                    <a href="/cadastro_imovel" class="btn btn-dark btn-sm">Cadastrar Imóvel</a>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</main>
+
 {% endblock %}

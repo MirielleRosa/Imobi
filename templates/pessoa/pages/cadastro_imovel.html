@@ -53,24 +53,33 @@
     </div>
 </form>
 <div class="modal fade" id="modalCidade" tabindex="-1" aria-labelledby="modalCidadeLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="modalCidadeLabel">Adicionar Nova Cidade</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <div class="form-floating mb-3">
-          <input type="text" class="form-control" id="nomeCidade" name="nomeCidade" placeholder=" ">
-          <label for="nomeCidade">Nome da Cidade</label>
+    <form class="modal-dialog" method="post" action="/post_cadastro_cidade">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalCidadeLabel">Adicionar Nova Cidade</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="nome" name="nome" placeholder=" ">
+                    <label for="nome">Nome da Cidade</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <select class="form-select" id="estado" name="estado">
+                        <option value="" disabled selected>Selecione o estado</option>
+                        {% for cidade in cidades %}
+                            <option value="{{ cidade.estado }}">{{ cidade.estado }}</option>
+                        {% endfor %}
+                    </select>
+                    <label for="estado">Estado</label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                <button type="submit" class="btn btn-primary">Salvar Cidade</button>
+            </div>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-        <button type="button" class="btn btn-primary" id="salvarCidade">Salvar Cidade</button>
-      </div>
-    </div>
-  </div>
+    </form>
 </div>
 <script src="/static/js/form.js"></script>
 <script src="/static/js/inputMasks.js"></script>
