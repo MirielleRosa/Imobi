@@ -71,9 +71,6 @@ async def post_alterar_perfil(
                 imagem_perfil=image_url, 
                 descricao=dados.get("descricao")
             )
-
-            print(alterar_perfil)
-
             PessoaRepo.alterar(alterar_perfil)
 
     except KeyError as e:
@@ -84,9 +81,8 @@ async def post_alterar_perfil(
 @router.get("/imoveis")
 def get_imoveis(request: Request, pessoa_logada: Pessoa = Depends(obter_pessoa_logada)):
     checar_autorizacao(pessoa_logada)
-    imoveis = ImovelRepo.obter_todos() 
+    imoveis = ImovelRepo.obter_todos_pessoa(pessoa_logada.id) 
     return templates.TemplateResponse("pages/imoveis.html", {"request": request, "pessoa": pessoa_logada, "imoveis": imoveis})
-
 
 @router.get("/cadastro_imovel")
 def get_cadastro_imovel(request: Request, pessoa_logada: Pessoa = Depends(obter_pessoa_logada)):
@@ -113,7 +109,6 @@ async def post_cadastro_cidade(request: Request, pessoa_logada: Pessoa = Depends
     except Exception as e:
         print(f"Erro ao inserir cidade no banco de dados: {e}")
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Erro interno ao cadastrar cidade")
-
 
 @router.post("/post_cadastro_imovel")
 async def post_cadastro_imovel(
@@ -158,9 +153,7 @@ async def post_cadastro_imovel(
             
             os.remove(file_name_secundario)
 
-        
         imagens_secundarias_str = ",".join(imagens_urls_secundarias)
-
 
         novo_imovel = Imovel(
             titulo=dados.get("titulo"),
@@ -174,13 +167,10 @@ async def post_cadastro_imovel(
             garagem=int(dados.get("garagem")),
             piscina=bool(dados.get("piscina")),
             imagem_principal=image_url_principal, 
-            imagens_secundarias=imagens_secundarias_str,  # Usar a string convertida
+            imagens_secundarias=imagens_secundarias_str, 
             pessoa_id=pessoa_logada.id,
             cidade_id=int(cidade_id)
         )
-
-        
-        print("Dados do novo imóvel:", novo_imovel)
 
         imovel_inserido = ImovelRepo.inserir(novo_imovel)
         if not imovel_inserido:
@@ -192,9 +182,7 @@ async def post_cadastro_imovel(
     return RedirectResponse(url="/imoveis", status_code=status.HTTP_303_SEE_OTHER)
 
 @router.get("/sair", response_class=RedirectResponse)
-async def get_sair(
-    request: Request, pessoa_logada: Pessoa = Depends(obter_pessoa_logada)
-):
+async def get_sair(request: Request, pessoa_logada: Pessoa = Depends(obter_pessoa_logada)):
     checar_autorizacao(pessoa_logada)
     if pessoa_logada:
         PessoaRepo.alterar_token(pessoa_logada.email, "")

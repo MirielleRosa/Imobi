@@ -54,6 +54,18 @@ class ImovelRepo:
         except sqlite3.Error as ex:
             print(ex)
             return []
+        
+    @classmethod
+    def obter_todos_pessoa(cls, pessoa_id: int) -> List[Imovel]:
+        try:
+            with obter_conexao() as conexao:
+                cursor = conexao.cursor()
+                tuplas = cursor.execute(SQL_OBTER_TODOS_IMOVEIS_DO_CORRETOR, (pessoa_id,)).fetchall()
+                imoveis = [Imovel(*t) for t in tuplas]
+                return imoveis
+        except sqlite3.Error as ex:
+            print(ex)
+            return []
 
     @classmethod
     def alterar(cls, imovel: Imovel) -> bool:

@@ -35,6 +35,10 @@ SQL_OBTER_TODOS_IMOVEIS = """
 SELECT * FROM imovel;
 """
 
+SQL_OBTER_TODOS_IMOVEIS_DO_CORRETOR = """
+SELECT * FROM imovel WHERE pessoa_id = ?;
+"""
+
 SQL_OBTER_UM_IMOVEL = """
 SELECT imovel.*, cidade.nome AS nome_cidade, cidade.estado
 FROM imovel

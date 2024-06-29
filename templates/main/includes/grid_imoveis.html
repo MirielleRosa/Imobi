@@ -1,9 +1,11 @@
 <div class="row row-cols-1 justify-content-start justify-content-md-center justify-content-lg-start row-cols-md-2 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5 gap-3 mt-4">
     {% for i in imoveis %}
     <div class="col card">
-        <a href="/imovel/{{i.id}}">
-            <img src="{{i.imagem_principal}}" class="card-img-top mt-2">
-        </a>
+        <div class="d-flex justify-content-center align-items-center mt-3" style="height: 200px;width: 100%; overflow: hidden;">
+            <a href="/imovel/{{i.id}}">
+                <img src="{{i.imagem_principal}}" class="img-fluid">
+            </a>
+        </div>
         <div class="card-body">
             <h5 class="card-title">{{i.titulo}}</h5>
             <p class="card-text texto-3-linhas">{{i.descricao}}</p>
@@ -25,7 +27,7 @@
             </div>
             <div class="d-flex flex-column align-items-center mt-2">
                 <div class="price text-success">
-                    <p class="fs-3 fs-md-4">R$ {{"{:,.2f}".format(i.preco)}}</p>
+                    <p class="fs-4 fs-md-4">R$ {{"{:,.2f}".format(i.preco)}}</p>
                 </div>
                 <a href="/imovel/{{i.id}}" class="btn btn-primary w-100">Verificar</a>
             </div>

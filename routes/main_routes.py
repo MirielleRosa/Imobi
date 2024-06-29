@@ -110,10 +110,7 @@ async def get_buscar(
     imoveis = ImovelRepo.obter_busca(q, p, tp, o)
     qtde_imoveis = ImovelRepo.obter_quantidade_busca(q)
     qtde_paginas = math.ceil(qtde_imoveis / float(tp))
-
-    print(imoveis)
-    print(qtde_imoveis)
-    print(qtde_paginas)
+    
     return templates.TemplateResponse(
         "pages/buscar.html",
         {
