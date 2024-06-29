@@ -2,7 +2,7 @@ from typing import List
 from datetime import datetime
 import os
 from fastapi import APIRouter, Depends, HTTPException, Request, status, File, UploadFile
-from fastapi.responses import RedirectResponse
+from fastapi.responses import JSONResponse, RedirectResponse
 from models.cidade_model import Cidade
 from models.imovel_model import Imovel
 from models.pessoa_model import Pessoa
