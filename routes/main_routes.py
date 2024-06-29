@@ -1,4 +1,5 @@
 from datetime import datetime
+import math
 from sqlite3 import DatabaseError
 from fastapi import APIRouter, Depends, Form, HTTPException, Query, Request, status
 from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
@@ -37,12 +38,13 @@ def get_root(request: Request, pessoa_logada: Pessoa = Depends(obter_pessoa_loga
     )
 
 @router.get("/imovel/{id:int}")
-async def get_imovel(request: Request, id: int):
+async def get_imovel(request: Request, id: int, pessoa_logada: Pessoa = Depends(obter_pessoa_logada)):
     imovel = ImovelRepo.obter_um(id)
     return templates.TemplateResponse(
         "pages/imovel.html",
         {
-            "request": request,
+            "request": request, 
+            "pessoa": pessoa_logada,
             "imovel": imovel,
         },
     )
@@ -95,6 +97,37 @@ def get_cadastro_realizado(
             "pessoa": pessoa_logada,
         },
     )
+
+@router.get("/buscar")
+async def get_buscar(
+    request: Request,
+    q: str,  # Certifique-se de que este parâmetro está sendo passado na URL
+    p: int = 1,
+    tp: int = 6,
+    o: int = 1,
+    pessoa_logada: Pessoa = Depends(obter_pessoa_logada)
+):
+    imoveis = ImovelRepo.obter_busca(q, p, tp, o)
+    qtde_imoveis = ImovelRepo.obter_quantidade_busca(q)
+    qtde_paginas = math.ceil(qtde_imoveis / float(tp))
+
+    print(imoveis)
+    print(qtde_imoveis)
+    print(qtde_paginas)
+    return templates.TemplateResponse(
+        "pages/buscar.html",
+        {
+            "request": request,
+            "pessoa": pessoa_logada,
+            "imoveis": imoveis,
+            "quantidade_paginas": qtde_paginas,
+            "tamanho_pagina": tp,
+            "pagina_atual": p,
+            "termo_busca": q,
+            "ordem": o,
+        },
+    )
+
 
 @router.get("/entrar", response_class=HTMLResponse)
 def get_entrar(request: Request, pessoa_logada: Pessoa = Depends(obter_pessoa_logada)):

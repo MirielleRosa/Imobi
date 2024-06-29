@@ -1,60 +1,8 @@
 {% extends "pages/base.html" %}
 {% block subtitulo %}Página Principal{% endblock %}
 {% block topo %}
+{% include "includes/topo.html" %}
 {% endblock %}
 {% block conteudo %}
-<h1 class="display-5"><b>Corretora de Imóveis</b></h1>
-<hr>
-<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-6 g-3 mb-3">
-    {% for i in imoveis %}
-    <div class="col">
-        <div class="card h-100">
-            <a href="/imovel/{{i.id}}">
-                <img src="{{i.imagem}}" class="card-img-top w-100 p-2">
-            </a>
-            <div class="card-body d-flex flex-column">
-                
-                <h5 class="card-title text-center">
-                        CLIENTE ID {{i.pessoa_id}}
-                    </a>
-                </h5>
-
-                <h5 class="card-title text-center">
-                    <a href="/imovel/{{i.id}}" class="text-decoration-none text-black">
-                        {{i.titulo}}
-                    </a>
-                </h5>
-                <i class="card-text text-center texto-3-linhas">
-                    {{i.descricao}}
-                </i>
-                <i class="lead text-danger text-center mt-auto">
-                    R$ {{"{:,.2f}".format(i.preco)}}
-                </i>
-        
-            </div>
-            <div class="card-body d-flex flex-row justify-content-center">
-                <div class="d-flex align-items-center mr-2 px-2" title="Quantidade de quartos">
-                    <img src="../../../static/img/quarto-icon.svg" alt="Quarto" style="width: 24px; height: 24px;">
-                    <span>{{i.quartos}}</span>
-                </div>
-                <div class="d-flex align-items-center mr-2 px-2" title="Quantidade de banheiros">
-                    <img src="../../../static/img/chuveiro-icon.svg" alt="Banheiro" style="width: 24px; height: 24px;">
-                    <span>{{i.banheiros}}</span>
-                </div>
-                <div class="d-flex align-items-center mr-2 px-2" title="Área">
-                    <img src="../../../static/img/icon-area.svg" alt="Área" style="width: 35px; height: 35px;">
-                    <span>{{i.area}}</span>
-                </div>
-                <!-- <div class="d-flex align-items-center">
-                    <img src="static/img/piscina.svg" alt="Piscina" style="width: 24px; height: 24px;">
-                    <span>{{i.piscina}}</span>
-                </div> -->
-            </div>
-            
-        </div>
-    </div>
-    {% endfor %}
-</div>
-
-
+{% include "includes/grid_imoveis.html" %}
 {% endblock %}
