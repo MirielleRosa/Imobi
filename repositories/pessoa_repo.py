@@ -75,7 +75,15 @@ class PessoaRepo:
                 return cursor.rowcount > 0
         except sqlite3.Error as ex:
             print(ex)
-            return False
+            return False  
+
+    @classmethod
+    def inserir_pessoas_json(cls, arquivo_json: str):
+        if PessoaRepo.obter_quantidade() == 0:
+            with open(arquivo_json, "r", encoding="utf-8") as arquivo:
+                pessoas = json.load(arquivo)
+                for pessoa in pessoas:
+                    PessoaRepo.inserir(Pessoa(**pessoa))
 
     @classmethod
     def excluir(cls, id: int) -> bool:

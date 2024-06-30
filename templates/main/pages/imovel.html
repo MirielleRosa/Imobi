@@ -33,13 +33,13 @@
                 </div>
             </div>
             {% if imagens_secundarias_validas %}
-                {% for imagem in imagens_secundarias_validas %}
-                    <div class="carousel-item">
-                        <div class="d-flex align-items-center justify-content-center" style="height: 500px;">
-                            <img src="{{imagem}}" class="h-100" alt="Imagem secundária">
-                        </div>
+            {% for imagem in imagens_secundarias_validas %}
+                <div class="carousel-item">
+                    <div class="d-flex align-items-center justify-content-center" style="height: 500px;">
+                        <img src="{{imagem}}" class="h-100" alt="Imagem secundária">
                     </div>
-                {% endfor %}
+                </div>
+            {% endfor %}
             {% endif %}
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
