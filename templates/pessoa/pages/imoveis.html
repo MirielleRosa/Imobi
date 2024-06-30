@@ -18,7 +18,7 @@
         <tbody>
             {% for imovel in imoveis %}
             <tr class="align-middle">
-                <td><img src="{{ imovel.imagem_principal }}" style="width: 95px; height:95px "></td>
+                <td><img src="{{ imovel.imagem_principal }}" class="img-fluid" style="max-width: 95px; max-height:95px"></td>
                 <td>{{ imovel.titulo }}</td>
                 <td>R$ {{ "{:,.2f}".format(imovel.preco) }}</td>
                 <td>{{ imovel.area }}</td>
@@ -34,7 +34,7 @@
                 </td>                
             </tr>
             <div class="modal fade" id="modalVisualizarImovel{{ imovel.id }}" tabindex="-1" aria-labelledby="modalVisualizarImovel{{ imovel.id }}Label" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-dialog modal-lg modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="modalVisualizarImovel{{ imovel.id }}Label">Detalhes do Imóvel</h5>
@@ -51,13 +51,13 @@
                                 </div>
                                 <div class="carousel-inner">
                                     <div class="carousel-item active">
-                                        <div class="d-flex align-items-center justify-content-center" style="height: 300px;">
+                                        <div class="d-flex align-items-center justify-content-center" style="height: 350px;">
                                             <img src="{{imovel.imagem_principal}}" class="img-fluid" alt="Imagem principal">
                                         </div>
                                     </div>
                                     {% for imagem in imagens_secundarias %}
                                     <div class="carousel-item">
-                                        <div class="d-flex align-items-center justify-content-center" style="height: 300px;">
+                                        <div class="d-flex align-items-center justify-content-center" style="height: 350px;">
                                             <img src="{{imagem.strip()}}" class="img-fluid" alt="Imagem secundária">
                                         </div>
                                     </div>
@@ -78,19 +78,32 @@
                             </div>
                             <div class="row mt-3">
                                 <div class="col-md-6">
-                                    <h5>{{ imovel.titulo }}</h5>
-                                    <p><strong>Descrição:</strong> {{ imovel.descricao }}</p>
+                                    <h4>{{ imovel.titulo }}</h4>
+                                    <p class="mt-4"><strong>Descrição:</strong></p>
+                                    <p style="text-align: justify;">{{ imovel.descricao }}</p>
                                     <p><strong>Endereço:</strong> {{ imovel.endereco }}</p>
-                                </div>
+                                </div>                                
                                 <div class="col-md-6">
-                                    <p><strong>Preço:</strong> R$ {{ "{:,.2f}".format(imovel.preco) }}</p>
-                                    <p><strong>Área m²:</strong> {{ imovel.area }}</p>
-                                    <p><strong>Quartos:</strong> {{ imovel.quartos }}</p>
-                                    <p><strong>Banheiros:</strong> {{ imovel.banheiros }}</p>
-                                    <p><strong>Garagem:</strong> {{ imovel.garagem }}</p>
-                                    <p><strong>Piscina:</strong> {% if imovel.piscina %}Sim{% else %}Não{% endif %}</p>
-                                    <p><strong>Cidade:</strong> {{imovel.nome_cidade}}</p>
-                                    <p><strong>Estado:</strong> {{ imovel.estado }}</p>
+                                    <div class="row">
+                                        <div class="col-md-6 mt-4">
+                                            <p class="mb-3"><strong>Tipo:</strong> {{ imovel.tipo }}</p>
+                                            <p class="mb-3"><strong>Área m²:</strong> {{ imovel.area }}</p>
+                                            <p class="mb-3"><strong>Quartos:</strong> {{ imovel.quartos }}</p>
+                                            <p class="mb-3"><strong>Banheiros:</strong> {{ imovel.banheiros }}</p>
+                                            <p class="mb-3"><strong>Garagem:</strong> {{ imovel.garagem }}</p>
+                                            <p class="mb-3"><strong>Preço:</strong> R$ {{ "{:,.2f}".format(imovel.preco) }}</p>
+                                        </div>
+                                        <div class="col-md-6 mt-4">
+                                            <p class="mb-3"><strong>Piscina:</strong> {% if imovel.piscina %}Sim{% else %}Não{% endif %}</p>
+                                            <p class="mb-3"><strong>Ar Condicionado:</strong> {% if imovel.ar_condicionado %}Sim{% else %}Não{% endif %}</p>
+                                            <p class="mb-3"><strong>Churrasqueira:</strong> {% if imovel.churrasqueira %}Sim{% else %}Não{% endif %}</p>
+                                            <p class="mb-3"><strong>Jardim:</strong> {% if imovel.jardim %}Sim{% else %}Não{% endif %}</p>
+                                            <p class="mb-3"><strong>Portaria 24h:</strong> {% if imovel.portaria %}Sim{% else %}Não{% endif %}</p>
+                                            <p class="mb-3"><strong>Academia:</strong> {% if imovel.academia %}Sim{% else %}Não{% endif %}</p>
+                                            <p class="mb-3"><strong>Cidade:</strong> {{ imovel.nome_cidade }}</p>
+                                            <p class="mb-3"><strong>Estado:</strong> {{ imovel.estado }}</p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

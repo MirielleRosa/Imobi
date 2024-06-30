@@ -341,10 +341,19 @@ async def post_editar_imovel(
             banheiros=int(form_data.get("banheiros")),
             garagem=int(form_data.get("garagem")),
             piscina=bool(form_data.get("piscina")),
+            ar_condicionado=bool(form_data.get("ar_condicionado")),
+            churrasqueira=bool(form_data.get("churrasqueira")),
+            jardim=bool(form_data.get("jardim")),
+            portaria=bool(form_data.get("portaria")),
+            academia=bool(form_data.get("academia")),
             imagem_principal=image_url_principal,
             imagens_secundarias=imagens_secundarias_str,
             cidade_id=int(form_data.get("cidade_id")),
-            pessoa_id=imovel.pessoa_id  
+            pessoa_id=imovel.pessoa_id,
+            nome_cidade=imovel.nome_cidade, 
+            estado=imovel.estado, 
+            nome_corretor=imovel.nome_corretor,  
+            imagem_corretor=imovel.imagem_corretor  
         )
 
         # print("Dataa:", alterar_imovel)
