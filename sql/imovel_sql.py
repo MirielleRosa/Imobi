@@ -41,6 +41,7 @@ SET titulo = ?, tipo = ?, descricao = ?, endereco = ?, preco = ?, area = ?, quar
 WHERE id = ?;
 """
 
+
 SQL_OBTER_TODOS_IMOVEIS = """
 SELECT imovel.*, cidade.nome AS nome_cidade, cidade.estado, pessoa.nome AS nome_corretor, pessoa.imagem_perfil AS imagem_corretor
 FROM imovel

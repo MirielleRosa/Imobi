@@ -2,11 +2,12 @@ from typing import List
 from datetime import datetime
 import os
 from urllib.parse import urlencode
-from fastapi import APIRouter, Depends, HTTPException, Request, status, File, UploadFile
+from fastapi import APIRouter, Depends, HTTPException, Request, status, File, UploadFile,  Form
 from fastapi.responses import JSONResponse, RedirectResponse
 from models.cidade_model import Cidade
 from models.imovel_model import Imovel
 from models.pessoa_model import Pessoa
+from firebase_admin import storage as admin_storage
 from repositories.cidade_repo import CidadeRepo
 from repositories.imovel_repo import ImovelRepo
 from repositories.pessoa_repo import PessoaRepo
@@ -94,6 +95,7 @@ def get_cadastro_imovel(request: Request, pessoa_logada: Pessoa = Depends(obter_
     cidades = CidadeRepo.obter_todos()
     return templates.TemplateResponse("pages/cadastro_imovel.html", {"request": request, "pessoa": pessoa_logada, "cidades": cidades})
 
+  
 @router.post("/post_cadastro_cidade", response_class=JSONResponse)
 async def post_cadastro_cidade(request: Request, pessoa_logada: Pessoa = Depends(obter_pessoa_logada)):
     checar_autorizacao(pessoa_logada)
@@ -231,6 +233,135 @@ async def post_trocar_senha(
 
     message = "Senha alterada com sucesso!"
     return RedirectResponse(url=f"/perfil?{urlencode({'error': message})}", status_code=status.HTTP_303_SEE_OTHER)
+
+@router.post("/excluir", response_class=JSONResponse)
+async def excluir_imovel(id_imovel: int = Form(...), pessoa_logada: Pessoa = Depends(obter_pessoa_logada)):
+    checar_autorizacao(pessoa_logada)
+    
+    try:
+        imovel = ImovelRepo.obter_um(id_imovel)
+        if not imovel:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Imóvel não encontrado.")
+        
+        if imovel.pessoa_id != pessoa_logada.id:
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Você não tem permissão para excluir este imóvel.")
+        
+        if ImovelRepo.excluir(id_imovel):
+            response = RedirectResponse(url="/imoveis", status_code=status.HTTP_303_SEE_OTHER)
+            adicionar_mensagem_sucesso(response, "Imóvel excluído com sucesso.")
+            return response
+        else:
+            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Falha ao excluir o imóvel.")
+    except HTTPException as e:
+        raise e
+    except Exception as ex:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Erro interno ao excluir o imóvel: {ex}")
+
+@router.get("/editar_imovel/{imovel_id}")
+def get_editar_imovel(imovel_id: int, request: Request, pessoa_logada: Pessoa = Depends(obter_pessoa_logada)):
+    checar_autorizacao(pessoa_logada)
+    imovel = ImovelRepo.obter_um(imovel_id)
+    if not imovel or imovel.pessoa_id != pessoa_logada.id:
+        raise HTTPException(status_code=404, detail="Imóvel não encontrado ou sem permissão.")
+    
+    cidades = CidadeRepo.obter_todos()
+    return templates.TemplateResponse("pages/editar_imovel.html", {
+        "request": request,
+        "pessoa": pessoa_logada,
+        "imovel": imovel,
+        "cidades": cidades
+    })
+
+@router.post("/post_editar_imovel/{imovel_id}", response_class=JSONResponse)
+async def post_editar_imovel(
+    request: Request,
+    imovel_id: int,
+    imagem_principal: UploadFile = File(None),
+    imagens_secundarias: List[UploadFile] = File(None),
+    pessoa_logada: Pessoa = Depends(obter_pessoa_logada)
+):
+    # print(f"Entrrei: {imovel_id}")
+
+    checar_autorizacao(pessoa_logada)
+
+
+    imovel = ImovelRepo.obter_um(imovel_id)
+    if not imovel or imovel.pessoa_id != pessoa_logada.id:
+        raise HTTPException(status_code=404, detail="Imóvel não encontrado ou sem permissão.")
+    
+    form_data = await request.form()
+
+
+    for key, value in form_data.items():
+        print(f"Campo: {key}, Valor: {value}")
+    # print(f"Campo: {key}, Valor: {value}")
+    try:
+
+        image_url_principal = imovel.imagem_principal 
+        if imagem_principal and imagem_principal.filename:
+            file_name_principal = f"{uuid.uuid4()}.png"
+            image_path_principal = f"imagens_imoveis/{file_name_principal}"
+
+            with open(file_name_principal, "wb") as buffer:
+                buffer.write(await imagem_principal.read())
+
+
+            firebaseconfig.storage.child(image_path_principal).put(file_name_principal)
+            image_url_principal = firebaseconfig.storage.child(image_path_principal).get_url(None)
+            os.remove(file_name_principal)
+
+        imagens_urls_secundarias = []
+        if imagens_secundarias:
+            for imagem in imagens_secundarias:
+                file_name_secundario = f"{uuid.uuid4()}.png"
+                image_path_secundario = f"imagens_imoveis/{file_name_secundario}"
+                
+                with open(file_name_secundario, "wb") as buffer:
+                    buffer.write(await imagem.read())
+                
+
+                firebaseconfig.storage.child(image_path_secundario).put(file_name_secundario)
+                image_url_secundaria = firebaseconfig.storage.child(image_path_secundario).get_url(None)
+                imagens_urls_secundarias.append(image_url_secundaria)
+                os.remove(file_name_secundario)
+            
+
+        imagens_secundarias_str = ",".join(imagens_urls_secundarias)
+
+        # print("pdsadsad")
+        alterar_imovel = Imovel(
+            id=imovel.id,
+            titulo=form_data.get("titulo"),
+            tipo=form_data.get("tipo"),
+            descricao=form_data.get("descricao"),
+            endereco=form_data.get("endereco"),
+            preco=float(form_data.get("preco")),
+            area=int(form_data.get("area")),
+            quartos=int(form_data.get("quartos")),
+            banheiros=int(form_data.get("banheiros")),
+            garagem=int(form_data.get("garagem")),
+            piscina=bool(form_data.get("piscina")),
+            imagem_principal=image_url_principal,
+            imagens_secundarias=imagens_secundarias_str,
+            cidade_id=int(form_data.get("cidade_id")),
+            pessoa_id=imovel.pessoa_id  
+        )
+
+        # print("Dataa:", alterar_imovel)
+
+        imovel_alterado = ImovelRepo.alterar(alterar_imovel)
+        if not imovel_alterado:
+            raise HTTPException(status_code=400, detail="Erro ao atualizar imóvel.")
+
+    except KeyError as e:
+        raise HTTPException(status_code=400, detail=f"Campo obrigatório ausente: {e}")
+    except Exception as e:
+        print(f"Ocorreu uma exceção não tratada: {type(e).__name__}: {str(e)}")
+        raise HTTPException(status_code=500, detail="Erro interno durante a atualização do imóvel.")
+
+    return RedirectResponse(url="/imoveis", status_code=status.HTTP_303_SEE_OTHER)
+
+ 
 
 @router.get("/sair", response_class=RedirectResponse)
 async def get_sair(request: Request, pessoa_logada: Pessoa = Depends(obter_pessoa_logada)):
