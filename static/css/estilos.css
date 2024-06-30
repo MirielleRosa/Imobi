@@ -73,6 +73,12 @@
     border: 1px solid var(--bs-danger);
 }
 
+.page-link-active {
+    background-color: #1b2c55 !important;
+    color: #fff !important;
+    border-color: #717272 !important; 
+  }
+
 .page-link.active,
 .page-link.active:hover {
     background-color: var(--bs-danger);

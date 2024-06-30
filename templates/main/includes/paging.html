@@ -1,0 +1,21 @@
+<div class="d-flex justify-content-end">
+    <nav>
+      <ul class="pagination">
+        <li class="page-item {{ 'disabled' if pagina_atual == 1 else '' }}">
+          <a class="page-link" href="/buscar?q={{ termo_busca }}&p={{ pagina_atual-1 }}&tp={{ tamanho_pagina }}&o={{ ordem }}">
+            <span>&laquo;</span>
+          </a>
+        </li>
+        {% for i in range(quantidade_paginas) %}
+        <li class="page-item {{ 'active' if (i+1)==pagina_atual else '' }}">
+          <a class="page-link page-link-active" href="/buscar?q={{ termo_busca }}&p={{ i+1 }}&tp={{ tamanho_pagina }}&o={{ ordem }}">{{ i+1 }}</a>
+        </li>
+        {% endfor %}
+        <li class="page-item {{ 'disabled' if pagina_atual == quantidade_paginas else '' }}">
+          <a class="page-link" href="/buscar?q={{ termo_busca }}&p={{ pagina_atual+1 }}&tp={{ tamanho_pagina }}&o={{ ordem }}">
+            <span>&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
