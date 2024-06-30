@@ -1,23 +1,27 @@
 <body class="d-flex flex-column min-vh-100">
   <main class="flex-grow-1">
-      <div class="bg-gray">
-          <div class="container">
-<div class="row">
-  <div class="col-md-8 d-flex flex-column align-items-start justify-content-start mt-xl-5">
-    <div class="mb-3 mt-xl-5">
-      <h1 class="display-3">Imobi Corretora de Imóveis</h1>
-      <h3 class="col-12 col-md-9 md-font-size ">A Imobi Corretora de Imóveis é uma vitrine virtual dedicada a apresentar uma seleção de imóveis disponíveis</h3>
+    <div class="bg-gray">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-8 d-flex flex-column align-items-start justify-content-start mt-xl-5">
+            <div class="mb-3 mt-xl-5">
+              <h1 class="display-3">Imobi Corretora de Imóveis</h1>
+              <h3 class="col-12 col-md-9 md-font-size ">A Imobi Corretora de Imóveis é uma vitrine virtual dedicada a apresentar uma seleção de imóveis disponíveis</h3>
+            </div>
+            <div class="d-xl-flex center col-12 col-lg-8 col-xl-7 p-3">
+              <form class="input-group mb-3" role="search" action="/buscar" method="get">
+                <input type="search" class="form-control rounded-1 border-1" placeholder="Buscar Local" name="q" required>
+                <button class="btn btn-dark text-light px-2" type="submit">
+                  <i class="bi bi-search"></i>
+                </button>
+              </form>
+            </div>
+          </div>
+          <div class="col-md-4 d-none mt-md-5 mt-lg-2 d-md-block mt-xl-1">
+            <img src="/static/img/fundo-topo.png" class="img-fluid" alt="">
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="d-xl-flex center col-12 col-lg-8 col-xl-7 p-3">
-      <form class="input-group mb-3" role="search" action="/buscar" method="get">
-        <input type="search" class="form-control rounded-1 border-1" placeholder="Buscar Local" name="q" required>
-        <button class="btn btn-dark text-light px-2" type="submit">
-          <i class="bi bi-search"></i>
-        </button>
-      </form>
-    </div>
-  </div>
-  <div class="col-md-4 d-none mt-md-5 mt-lg-2 d-md-block mt-xl-1">
-    <img src="/static/img/fundo-topo.png" class="img-fluid" alt="">
-  </div>
-</div>
+  </main>
+</body>
