@@ -2,7 +2,7 @@
 
 ## Descrição do Projeto
 
-O Projeto Corretora de Imóveis é uma aplicação web desenvolvida para resolver problemas relacionados à autenticação de usuário e gerenciamento de entidades com relacionamento de 1 para N (um para muitos). A aplicação visa facilitar o gerenciamento de imóveis por corretores, permitindo que cada corretor cadastre e gerencie seus próprios imóveis. Além disso, a aplicação fornece uma vitrine de imóveis para todos os corretores cadastrados.
+O Projeto Corretora de Imóveis é uma aplicação web desenvolvida para resolver problemas relacionados à autenticação de usuário e gerenciamento de entidades com relacionamento de 1 para N (um para muitos). A aplicação visa facilitar o gerenciamento de imóveis por corretores, permitindo que cada corretor cadastre e gerencie seus próprios imóveis. Além disso, a aplicação fornece uma vitrine de imóveis para todos.
 
 ## Funcionalidades Principais
 
