@@ -63,7 +63,7 @@
     <div class="d-flex justify-content-center col-12 col-lg-4 col-xl-4 col-xxl-4">
         <form class="bg-white px-5 rounded-3 py-3 shadow w-100" method="post">
             <div class="d-flex align-items-center mb-2">
-                <img src="{{imovel.imagem_corretor}}" class="rounded-circle me-2" alt="Corretor" width="40" height="40">
+                <img src="{{imovel.imagem_corretor if imovel.imagem_corretor else '/static/img/imagem-perfil.png'}}" class="rounded-circle me-2" alt="Corretor" width="40" height="40">
                 <div>
                     <div class="fw-bold">{{imovel.nome_corretor}}</div>
                 </div>
@@ -98,37 +98,91 @@
     {% endif %}
 </div>
 <div class="bg-white shadow rounded bg-white shadow rounded col-12 col-sm-12 col-md-12 col-lg-7 col-xl-7 col-xxl-7 px-0 mt-5">
-        <div class="w-100">
-            <h2 class="m-2 p-3">Detalhes</h2>
-            <div class="table-responsive">
-                <table class="table">
-                    <thead>
-                        <tr class="text-center">
-                            <th>Quartos</th>
-                            <th>Banheiros</th>
-                            <th>Garagem</th>
-                            <th>Piscina</th>
-                            <th>Área</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="text-center">
-                            <td>{{imovel.quartos}}</td>
-                            <td>{{imovel.banheiros}}</td>
-                            <td>{{imovel.garagem}}</td>
-                            <td>
-                                {% if imovel.piscina %}
-                                <i class="bi bi-check-square"></i>
-                                {% else %}
-                                <i class="bi bi-x-lg"></i>
-                                {% endif %}
-                            </td>
-                            <td>{{imovel.area}} m²</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+    <div class="w-100">
+        <h2 class="m-2 p-3">Detalhes</h2>
+        <div class="table-responsive m-3">
+            <table class="table">
+                <tbody>
+                    <tr class="">
+                        <th style="text-align: left;">Quartos</th>
+                        <td style="text-align: left;">{{imovel.quartos}}</td>
+                    </tr>
+                    <tr>
+                        <th style="text-align: left;">Banheiros</th>
+                        <td style="text-align: left;">{{imovel.banheiros}}</td>
+                    </tr>
+                    <tr>
+                        <th style="text-align: left;">Garagem</th>
+                        <td style="text-align: left;">{{imovel.garagem}}</td>
+                    </tr>
+                    <tr>
+                        <th style="text-align: left;">Área</th>
+                        <td style="text-align: left;">{{imovel.area}} m²</td>
+                    </tr>
+                    <tr>
+                        <th style="text-align: left;">Piscina</th>
+                        <td style="text-align: left;">
+                            {% if imovel.piscina %}
+                            <i class="bi bi-check-square"></i>
+                            {% else %}
+                            <i class="bi bi-x-lg"></i>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th style="text-align: left;">Jardim</th>
+                        <td style="text-align: left;">
+                            {% if imovel.jardim %}
+                            <i class="bi bi-check-square"></i>
+                            {% else %}
+                            <i class="bi bi-x-lg"></i>
+                            {% endif %}
+                        </td>
+                    </tr> 
+                    <tr>
+                        <th style="text-align: left;">Churrasqueira</th>
+                        <td style="text-align: left;">
+                            {% if imovel.churrasqueira %}
+                            <i class="bi bi-check-square"></i>
+                            {% else %}
+                            <i class="bi bi-x-lg"></i>
+                            {% endif %}
+                        </td>
+                    </tr> 
+                    <tr>
+                        <th style="text-align: left;">Ar Condicionado</th>
+                        <td style="text-align: left;">
+                            {% if imovel.ar_condicionado %}
+                            <i class="bi bi-check-square"></i>
+                            {% else %}
+                            <i class="bi bi-x-lg"></i>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th style="text-align: left;">Portaria</th>
+                        <td style="text-align: left;">
+                            {% if imovel.portaria %}
+                            <i class="bi bi-check-square"></i>
+                            {% else %}
+                            <i class="bi bi-x-lg"></i>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th style="text-align: left;">Academia</th>
+                        <td style="text-align: left;">
+                            {% if imovel.academia %}
+                            <i class="bi bi-check-square"></i>
+                            {% else %}
+                            <i class="bi bi-x-lg"></i>
+                            {% endif %}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
+    </div>
 </div>
 <div class="bg-white shadow rounded col-12 col-sm-12 col-md-12 col-lg-7 col-xl-7 col-xxl-7 px-0 mt-5">
     <div class="card-body p-4">

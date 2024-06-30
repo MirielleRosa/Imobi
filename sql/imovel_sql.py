@@ -11,6 +11,11 @@ CREATE TABLE IF NOT EXISTS imovel (
     banheiros INTEGER NOT NULL,
     garagem INTEGER NOT NULL,
     piscina BOOLEAN NOT NULL,
+    ar_condicionado BOOLEAN NOT NULL,
+    churrasqueira BOOLEAN NOT NULL,
+    jardim BOOLEAN NOT NULL,
+    portaria BOOLEAN NOT NULL,
+    academia BOOLEAN NOT NULL,
     imagem_principal TEXT,
     imagens_secundarias TEXT,
     pessoa_id INTEGER NOT NULL,
@@ -21,13 +26,18 @@ CREATE TABLE IF NOT EXISTS imovel (
 """
 
 SQL_INSERIR_IMOVEL = """
-INSERT INTO imovel (titulo, tipo, descricao, endereco, preco, area, quartos, banheiros, garagem, piscina, imagem_principal, imagens_secundarias, pessoa_id, cidade_id)
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+INSERT INTO imovel (
+    titulo, tipo, descricao, endereco, preco, area, quartos, banheiros, garagem, piscina, 
+    ar_condicionado, churrasqueira, jardim, portaria, academia, 
+    imagem_principal, imagens_secundarias, pessoa_id, cidade_id
+) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 """
 
 SQL_ALTERAR_IMOVEL = """
 UPDATE imovel
-SET titulo = ?, descricao = ?, endereco = ?, preco = ?, area = ?, quartos = ?, banheiros = ?, imagem = ?, pessoa_id = ?, cidade_id = ?
+SET titulo = ?, tipo = ?, descricao = ?, endereco = ?, preco = ?, area = ?, quartos = ?, banheiros = ?, garagem = ?, piscina = ?, 
+    ar_condicionado = ?, churrasqueira = ?, jardim = ?, portaria = ?, academia = ?, 
+    imagem_principal = ?, imagens_secundarias = ?, pessoa_id = ?, cidade_id = ?
 WHERE id = ?;
 """
 
