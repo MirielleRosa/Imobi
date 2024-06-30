@@ -1,30 +1,30 @@
 {% extends "pages/base.html" %}
 {% block subtitulo %}Entrar{% endblock %}
 {% block conteudo %}
-<div class="container">
-    <h1 class="display-5"><b>Entrar</b></h1>
-    <hr>
-    <form class="row json-form" action="/post_entrar" method="post">
-        <div class="col-12 col-md-6 col-xl-4">
+<div class="container col d-flex justify-content-center align-items-center mt-5" >
+    <div class="card col-7 p-5 shadow w-full">
+        <h1 class="card-title text-center mb-4"><b>Entrar</b></h1>
+        <form class="json-form" action="/post_entrar" method="post">
             <div class="form-floating mb-3">
-                <input type="email" class="form-control" id="email" name="email" placeholder=" ">
+                <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com">
                 <label for="email">E-mail</label>
             </div>
             <div class="form-floating mb-3">
-                <input type="password" class="form-control" id="senha" name="senha" placeholder=" ">
+                <input type="password" class="form-control" id="senha" name="senha" placeholder="Password">
                 <label for="senha">Senha</label>
             </div>
-            <div class="mb-3">
+            <div class="d-grid gap-2">
                 <button class="btn btn-dark btn-lg" type="submit">Entrar</button>
             </div>
-            <p class="lead mb-2">
-                <a href="/recuperacaosenha" class="text-decoration-none text-dark">Esqueci minha senha</a>
+            <p class="text-center mt-3">
+                <a href="/recuperacaosenha" class="text-decoration-none">Esqueci minha senha</a>
             </p>
-            <p class="lead my-0">
-                <a href="/cadastro" class="text-decoration-none text-dark">Ainda não sou cadastrado</a>
+            <p class="text-center">
+                <a href="/cadastro" class="text-decoration-none">Ainda não sou cadastrado</a>
             </p>
-        </div>
-    </form>
+        </form>
+    </div>
 </div>
+
 <script src="/static/js/formToJson.js"></script>
 {% endblock %}
