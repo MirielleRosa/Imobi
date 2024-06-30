@@ -5,7 +5,7 @@
 <main class="container py-3">
     <h1 class="display-5"><b>Meus Imóveis</b></h1>
     <hr>
-    <table class="table table-striped">
+    <table class="table">
         <thead class="table-light">
             <tr>
                 <th class="bg-primary text-light">Imagem</th>
@@ -18,26 +18,95 @@
         <tbody>
             {% for imovel in imoveis %}
             <tr class="align-middle">
-                <td><img src="{{ imovel.imagem }}" style="width: 64px"></td>
+                <td><img src="{{ imovel.imagem_principal }}" style="width: 95px; height:95px "></td>
                 <td>{{ imovel.titulo }}</td>
                 <td>R$ {{ "{:,.2f}".format(imovel.preco) }}</td>
                 <td>{{ imovel.area }}</td>
                 <td>
-                    <a href="#" class="btn btn-primary btn-sm d-inline-block"><i class="bi bi-eye-fill"></i></a>
-                    <a href="#" class="btn btn-secondary btn-sm d-inline-block"><i class="bi bi-pencil-fill"></i></a>
-                    <a href="#" class="btn btn-danger btn-sm d-inline-block"><i class="bi bi-trash3-fill"></i></a>
-                </td>
+                    <div class="align-items-center gap-2">
+                        <a href="#" class="btn btn-sm d-inline-block" data-bs-toggle="modal" data-bs-target="#modalVisualizarImovel{{ imovel.id }}"><i class="bi bi-eye-fill fs-5"></i></a>
+                        <a href="/editar_imovel/{{ imovel.id }}" class="btn btn-sm d-inline-block"><i class="bi bi-pencil-fill fs-5"></i></a>
+                        <form class="json-form" action="/excluir" method="post" style="display: inline;">
+                            <input type="hidden" name="id_imovel" value="{{ imovel.id }}">
+                            <button type="submit" class="btn btn-sm d-inline-block"><i class="bi bi-trash3-fill fs-5"></i></button>
+                        </form>                        
+                    </div>
+                </td>                
             </tr>
+            <div class="modal fade" id="modalVisualizarImovel{{ imovel.id }}" tabindex="-1" aria-labelledby="modalVisualizarImovel{{ imovel.id }}Label" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalVisualizarImovel{{ imovel.id }}Label">Detalhes do Imóvel</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-indicators">
+                                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                                    {% set imagens_secundarias = imovel.imagens_secundarias.split(',') %}
+                                    {% for i in range(1, imagens_secundarias|length + 1) %}
+                                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{i}}" aria-label="Slide {{i + 1}}"></button>
+                                    {% endfor %}
+                                </div>
+                                <div class="carousel-inner">
+                                    <div class="carousel-item active">
+                                        <div class="d-flex align-items-center justify-content-center" style="height: 300px;">
+                                            <img src="{{imovel.imagem_principal}}" class="img-fluid" alt="Imagem principal">
+                                        </div>
+                                    </div>
+                                    {% for imagem in imagens_secundarias %}
+                                    <div class="carousel-item">
+                                        <div class="d-flex align-items-center justify-content-center" style="height: 300px;">
+                                            <img src="{{imagem.strip()}}" class="img-fluid" alt="Imagem secundária">
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                                    <div class="carousel-inner">
+                                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                            <span class="visually-hidden">Previous</span>
+                                        </button>
+                                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                            <span class="visually-hidden">Next</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-6">
+                                    <h5>{{ imovel.titulo }}</h5>
+                                    <p><strong>Descrição:</strong> {{ imovel.descricao }}</p>
+                                    <p><strong>Endereço:</strong> {{ imovel.endereco }}</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p><strong>Preço:</strong> R$ {{ "{:,.2f}".format(imovel.preco) }}</p>
+                                    <p><strong>Área m²:</strong> {{ imovel.area }}</p>
+                                    <p><strong>Quartos:</strong> {{ imovel.quartos }}</p>
+                                    <p><strong>Banheiros:</strong> {{ imovel.banheiros }}</p>
+                                    <p><strong>Garagem:</strong> {{ imovel.garagem }}</p>
+                                    <p><strong>Piscina:</strong> {% if imovel.piscina %}Sim{% else %}Não{% endif %}</p>
+                                    <p><strong>Cidade:</strong> {{imovel.nome_cidade}}</p>
+                                    <p><strong>Estado:</strong> {{ imovel.estado }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             {% endfor %}
         </tbody>
-        <tfoot>
-            <tr>
-                <td colspan="5" class="text-end">
-                    <a href="/cadastro_imovel" class="btn btn-dark btn-sm">Cadastrar Imóvel</a>
-                </td>
-            </tr>
-        </tfoot>
     </table>
+    <div class="text-end mt-5 mb-5">
+        <a href="/cadastro_imovel" class="btn btn-dark btn-md">Cadastrar Imóvel</a>
+    </div>
 </main>
-
+<script src="/static/js/form.js"></script>
+<script src="/static/js/inputMasks.js"></script>
 {% endblock %}

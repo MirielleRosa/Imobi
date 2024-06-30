@@ -150,7 +150,7 @@ class ImovelRepo:
                     return imovel
                 else:
                     print("Nenhum imóvel encontrado.")
-                    return 0  # Return 0 if no results found
+                    return 0  
         except sqlite3.Error as ex:
             print(f"Erro ao obter quantidade de imóveis: {ex}")
             return None
