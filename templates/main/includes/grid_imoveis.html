@@ -3,7 +3,7 @@
   <div class="col mb-4"> 
       <a href="/imovel/{{i.id}}" style="text-decoration: none; color: inherit;">
         <div class="card">
-          <img src="{{i.imagem_principal}}" class="card-img-top" alt="Property Image" style="height: 160px; width: 100%; overflow: hidden;">
+          <img src="{{i.imagem_principal}}" class="card-img-top" alt="Property Image" style="height: 160px; width: 100%; object-fit: cover; overflow: hidden;">
           <div class="card-body">
             <h5 class="card-title">{{i.titulo}}</h5>
             <p class="card-text text-primary font-weight-bold">R$ {{"{:,.2f}".format(i.preco)}}</p>

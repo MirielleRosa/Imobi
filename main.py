@@ -13,6 +13,8 @@ CidadeRepo.criar_tabela()
 ImovelRepo.criar_tabela()
 
 CidadeRepo.inserir_cidades_json("sql/json/cidades.json")
+PessoaRepo.inserir_pessoas_json("sql/json/pessoas.json")
+ImovelRepo.inserir_imoveis_json("sql/json/imoveis.json")
 
 app = FastAPI()
 app.middleware(middleware_type="http")(atualizar_cookie_autenticacao)

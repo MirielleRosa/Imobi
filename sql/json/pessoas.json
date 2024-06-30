@@ -1,0 +1,41 @@
+[
+    {
+        "id": 1,
+        "nome": "Antônio Silva",
+        "cpf": "123.456.789-00",
+        "data_nascimento": "1980-01-01",
+        "endereco": "Rua A, 123, Bairro X, Cidade Y",
+        "telefone": "(11) 98765-4321",
+        "email": "antonio.silva@example.com",
+        "senha": "$2b$12$.xym37ZRhVajcONKLpOVFuPBRQkx/VhLwjoyDS5SOLMJmjOb01kB6",
+        "imagem_perfil": "https://firebasestorage.googleapis.com/v0/b/corretorauploads.appspot.com/o/imagens_perfil%2Fantonio.png?alt=media&token=2e3d0a22-3041-41ab-ba1f-41ffa372df9b",
+        "descricao": "Corretor de imóveis experiente.",
+        "token": ""
+    },
+    {
+        "id": 2,
+        "nome": "Maria Oliveira",
+        "cpf": "987.654.321-00",
+        "data_nascimento": "1990-02-02",
+        "endereco": "Rua B, 456, Bairro Y, Cidade Z",
+        "telefone": "(21) 87654-3210",
+        "email": "maria.oliveira@example.com",
+        "senha": "$2b$12$.xym37ZRhVajcONKLpOVFuPBRQkx/VhLwjoyDS5SOLMJmjOb01kB6",
+        "imagem_perfil": "https://firebasestorage.googleapis.com/v0/b/corretorauploads.appspot.com/o/imagens_perfil%2Fmaria.png?alt=media&token=f79a3fd2-2fae-4191-a42d-7064a1fc895d",
+        "descricao": "Corretora de imóveis dedicada.",
+        "token": ""
+    },
+    {
+        "id": 3,
+        "nome": "Francisco Souza",
+        "cpf": "111.222.333-44",
+        "data_nascimento": "1975-03-03",
+        "endereco": "Rua C, 789, Bairro Z, Cidade W",
+        "telefone": "(31) 76543-2109",
+        "email": "francisco.souza@example.com",
+        "senha": "$2b$12$.xym37ZRhVajcONKLpOVFuPBRQkx/VhLwjoyDS5SOLMJmjOb01kB6",
+        "imagem_perfil": "https://firebasestorage.googleapis.com/v0/b/corretorauploads.appspot.com/o/imagens_perfil%2Ffrancisco.png?alt=media&token=cbd91323-8c9c-4793-941b-d3b7a619b0a7",
+        "descricao": "Corretor de imóveis experiente.",
+        "token": ""
+    }
+]

@@ -1,3 +1,4 @@
+import json
 import sqlite3
 from typing import List, Optional
 from models.imovel_model import Imovel
@@ -59,6 +60,26 @@ class ImovelRepo:
         except sqlite3.Error as ex:
             print(ex)
             return []
+        
+    @classmethod
+    def obter_quantidade(cls) -> Optional[int]:
+        try:
+            with obter_conexao() as conexao:
+                cursor = conexao.cursor()
+                tupla = cursor.execute(SQL_OBTER_QUANTIDADE).fetchone()
+                return int(tupla[0])
+        except sqlite3.Error as ex:
+            print(ex)
+            return None
+
+        
+    @classmethod
+    def inserir_imoveis_json(cls, arquivo_json: str):
+        if ImovelRepo.obter_quantidade() == 0:
+            with open(arquivo_json, "r", encoding="utf-8") as arquivo:
+                imoveis = json.load(arquivo)
+                for imovel in imoveis:
+                    ImovelRepo.inserir(Imovel(**imovel))
         
     @classmethod
     def obter_todos_pessoa(cls, pessoa_id: int) -> List[Imovel]:
