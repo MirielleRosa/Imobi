@@ -1,6 +1,7 @@
 from typing import List
 from datetime import datetime
 import os
+from urllib.parse import urlencode
 from fastapi import APIRouter, Depends, HTTPException, Request, status, File, UploadFile
 from fastapi.responses import JSONResponse, RedirectResponse
 from models.cidade_model import Cidade
@@ -9,8 +10,8 @@ from models.pessoa_model import Pessoa
 from repositories.cidade_repo import CidadeRepo
 from repositories.imovel_repo import ImovelRepo
 from repositories.pessoa_repo import PessoaRepo
-from util.auth import checar_autorizacao, obter_pessoa_logada
-from util.cookies import adicionar_mensagem_sucesso
+from util.auth import *
+from util.cookies import *
 import uuid
 import util.firebaseconfig as firebaseconfig
 from util.templates import obter_jinja_templates
@@ -113,8 +114,8 @@ async def post_cadastro_cidade(request: Request, pessoa_logada: Pessoa = Depends
 @router.post("/post_cadastro_imovel")
 async def post_cadastro_imovel(
     request: Request,
-    imagem_principal: UploadFile = File(...),
-    imagens_secundarias: List[UploadFile] = File(...),
+    imagem_principal: UploadFile = File(None),
+    imagens_secundarias: List[UploadFile] = File(None),
     pessoa_logada: Pessoa = Depends(obter_pessoa_logada)
 ):
     checar_autorizacao(pessoa_logada)
@@ -127,31 +128,40 @@ async def post_cadastro_imovel(
         if not cidade_id:
             raise HTTPException(status_code=400, detail="Cidade não selecionada ou inválida.")
         
-        # Processar imagem principal
-        file_name_principal = f"{uuid.uuid4()}.png"
-        image_path_principal = f"imagens_imoveis/{file_name_principal}"
+        # Processar imagem principal se não for None
+        image_url_principal = None
+        if imagem_principal.size > 0:
+            file_name_principal = f"{uuid.uuid4()}.png"
+            image_path_principal = f"imagens_imoveis/{file_name_principal}"
+            
+            with open(file_name_principal, "wb") as buffer:
+                buffer.write(await imagem_principal.read())
+            
+            firebaseconfig.storage.child(image_path_principal).put(file_name_principal)
+            image_url_principal = firebaseconfig.storage.child(image_path_principal).get_url(None)
+            os.remove(file_name_principal)
+
+        print(imagens_secundarias)
         
-        with open(file_name_principal, "wb") as buffer:
-            buffer.write(await imagem_principal.read())
-        
-        firebaseconfig.storage.child(image_path_principal).put(file_name_principal)
-        image_url_principal = firebaseconfig.storage.child(image_path_principal).get_url(None)
-        os.remove(file_name_principal)
-        
-        # Processar imagens secundárias
+        total_size = 0
+        for imagem_secundaria in imagens_secundarias:
+            total_size += imagem_secundaria.size
+    
+
         imagens_urls_secundarias = []
-        for imagem in imagens_secundarias:
-            file_name_secundario = f"{uuid.uuid4()}.png"
-            image_path_secundario = f"imagens_imoveis/{file_name_secundario}"
-            
-            with open(file_name_secundario, "wb") as buffer:
-                buffer.write(await imagem.read())
-            
-            firebaseconfig.storage.child(image_path_secundario).put(file_name_secundario)
-            image_url_secundaria = firebaseconfig.storage.child(image_path_secundario).get_url(None)
-            imagens_urls_secundarias.append(image_url_secundaria)
-            
-            os.remove(file_name_secundario)
+        if total_size > 0:
+            for imagem in imagens_secundarias:
+                file_name_secundario = f"{uuid.uuid4()}.png"
+                image_path_secundario = f"imagens_imoveis/{file_name_secundario}"
+                
+                with open(file_name_secundario, "wb") as buffer:
+                    buffer.write(await imagem.read())
+                
+                firebaseconfig.storage.child(image_path_secundario).put(file_name_secundario)
+                image_url_secundaria = firebaseconfig.storage.child(image_path_secundario).get_url(None)
+                imagens_urls_secundarias.append(image_url_secundaria)
+                
+                os.remove(file_name_secundario)
 
         imagens_secundarias_str = ",".join(imagens_urls_secundarias)
 
@@ -180,6 +190,39 @@ async def post_cadastro_imovel(
         raise HTTPException(status_code=400, detail=f"Campo obrigatório ausente: {e}")
 
     return RedirectResponse(url="/imoveis", status_code=status.HTTP_303_SEE_OTHER)
+
+@router.post("/trocar_senha")
+async def post_trocar_senha(
+    request: Request,
+    pessoa_logada: Pessoa = Depends(obter_pessoa_logada)
+):
+    checar_autorizacao(pessoa_logada)
+
+    form_data = await request.form()
+    dados = {key: form_data[key] for key in form_data}
+
+    try:
+        senha_atual = dados.get("senha_atual")
+        nova_senha = dados.get("nova_senha")
+        confirmar_nova_senha = dados.get("confirmar_nova_senha")
+
+        if not conferir_senha(senha_atual, pessoa_logada.senha):
+            error_message = "Senha atual incorreta!"
+            return RedirectResponse(url=f"/perfil?{urlencode({'error': error_message})}", status_code=status.HTTP_303_SEE_OTHER)
+
+        if nova_senha != confirmar_nova_senha:
+            error_message = "A nova senha e a confirmação não coincidem!"
+            return RedirectResponse(url=f"/perfil?{urlencode({'error': error_message})}", status_code=status.HTTP_303_SEE_OTHER)
+
+        nova_senha_hash = obter_hash_senha(nova_senha)
+        PessoaRepo.alterar_senha(pessoa_logada.id, nova_senha_hash)
+
+    except KeyError as e:
+        error_message = f"Campo obrigatório ausente: {e}"
+        return RedirectResponse(url=f"/perfil?{urlencode({'error': error_message})}", status_code=status.HTTP_303_SEE_OTHER)
+
+    message = "Senha alterada com sucesso!"
+    return RedirectResponse(url=f"/perfil?{urlencode({'error': message})}", status_code=status.HTTP_303_SEE_OTHER)
 
 @router.get("/sair", response_class=RedirectResponse)
 async def get_sair(request: Request, pessoa_logada: Pessoa = Depends(obter_pessoa_logada)):

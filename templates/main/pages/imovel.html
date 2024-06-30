@@ -1,61 +1,64 @@
 {% extends "pages/base.html" %}
 {% block subtitulo %}Detalhes do Imóvel {{imovel.nome}}{% endblock %}
 {% block conteudo %}
-<div class="d-flex flex-column flex-lg-row justify-content-between text-black">
+<div class="d-flex flex-column flex-lg-row justify-content-between">
     <div>
-      <h1 class="fw-bold">{{imovel.titulo}}</h1>
+      <h1 class="display-5">{{imovel.titulo}}</h1>
       <span class="text-muted">{{imovel.endereco}}, {{imovel.nome_cidade}}, {{imovel.estado}}</span>
     </div>
     <div class="text-lg-end mt-3 mt-lg-0">
-      <h2 class="fw-bold">R$ {{"{:,.2f}".format(imovel.preco)}}</h2>
+      <h2 class="display-5">R$ {{"{:,.2f}".format(imovel.preco)}}</h2>
       <span class="text-muted">{{imovel.area}} m²</span>
     </div>
 </div>
 <div class="d-flex flex-column col flex-lg-row justify-content-between gap-3 gap-lg-5 mt-5 mb-3">
     <div id="carouselExampleIndicators" class="carousel slide col-12 col-xl-7 col-lg-7 col-md-12" data-bs-ride="carousel" class="carousel slide" style="background: #EEEDDE;">
         <div class="carousel-indicators">
-              <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-              {% set imagens_secundarias = imovel.imagens_secundarias.split(',') %}
-              {% for i in range(1, imagens_secundarias|length + 1) %}
-              <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{i}}" aria-label="Slide {{i + 1}}"></button>
-              {% endfor %}
-          </div>
-          <div class="carousel-inner">
-              <div class="carousel-item active">
-                  <div class="d-flex align-items-center justify-content-center" style="height: 500px;">
-                      <img src="{{imovel.imagem_principal}}" class="h-100" alt="Imagem principal">
-                  </div>
-              </div>
-              {% for imagem in imagens_secundarias %}
-              <div class="carousel-item">
-                  <div class="d-flex align-items-center justify-content-center" style="height: 500px;">
-                      <img src="{{imagem.strip()}}" class="h-100" alt="Imagem secundária">
-                  </div>
-              </div>
-              {% endfor %}
-              <div class="carousel-indicators">
-              <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-              {% set imagens_secundarias = imovel.imagens_secundarias.split(',') %}
-              {% for i in range(1, imagens_secundarias|length + 1) %}
-              <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{i}}" aria-label="Slide {{i + 1}}"></button>
-              {% endfor %}
-          </div>
-      </div>
-          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Previous</span>
-          </button>
-          <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-              <span class="carousel-control-next-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Next</span>
-          </button>
-      </div>    
-      <div class="d-flex mt-3 justify-content-center flex-wrap d-sm-flex d-md-flex d-lg-none">
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            {% set imagens_secundarias = imovel.imagens_secundarias.split(',') %}
+            {% set imagens_secundarias_validas = [] %}
+            {% for imagem in imagens_secundarias %}
+                {% if imagem.strip() %}
+                    {% set _ = imagens_secundarias_validas.append(imagem.strip()) %}
+                {% endif %}
+            {% endfor %}
+            {% for i in range(imagens_secundarias_validas|length) %}
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ i + 1 }}" aria-label="Slide {{ i + 2 }}"></button>
+            {% endfor %}
+        </div>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <div class="d-flex align-items-center justify-content-center" style="height: 500px;">
+                    <img src="{{imovel.imagem_principal}}" class="h-100" alt="Imagem principal">
+                </div>
+            </div>
+            {% if imagens_secundarias_validas %}
+                {% for imagem in imagens_secundarias_validas %}
+                    <div class="carousel-item">
+                        <div class="d-flex align-items-center justify-content-center" style="height: 500px;">
+                            <img src="{{imagem}}" class="h-100" alt="Imagem secundária">
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+        <div class="d-flex mt-3 justify-content-center flex-wrap d-sm-flex d-md-flex d-lg-none">
+        {% if imagens_secundarias_validas %}
         {% for imagem in [imovel.imagem_principal] + imagens_secundarias %}
         <div class="col-auto mb-3">
             <img src="{{ imagem }}" class="img-thumbnail" style="width: 100px; height: 100px; cursor: pointer;" onclick="selectImage('{{ imagem }}')" alt="Imagem">
         </div>
         {% endfor %}
+        {% endif %}
     </div>
     <div class="d-flex justify-content-center col-12 col-lg-4 col-xl-4 col-xxl-4">
         <form class="bg-white px-5 rounded-3 py-3 shadow w-100" method="post">
@@ -86,11 +89,13 @@
     </div>
 </div>
 <div class="d-flex mt-3 d-none d-sm-none d-md-none d-lg-flex d-xl-flex d-xxl-flex">
+    {% if imagens_secundarias_validas %}
     {% for imagem in [imovel.imagem_principal] + imagens_secundarias %}
     <div class="col-auto">
         <img src="{{ imagem }}" class="img-thumbnail" style="width: 100px; height: 100px; cursor: pointer;" onclick="selectImage('{{ imagem }}')" alt="Imagem">
     </div>
     {% endfor %}
+    {% endif %}
 </div>
 <div class="bg-white shadow rounded bg-white shadow rounded col-12 col-sm-12 col-md-12 col-lg-7 col-xl-7 col-xxl-7 px-0 mt-5">
         <div class="w-100">
@@ -101,7 +106,7 @@
                         <tr class="text-center">
                             <th>Quartos</th>
                             <th>Banheiros</th>
-                            <th>Garagens</th>
+                            <th>Garagem</th>
                             <th>Piscina</th>
                             <th>Área</th>
                         </tr>
@@ -125,7 +130,7 @@
             </div>
         </div>
 </div>
-<div class="bg-white shadow rounded col-12 col-sm-12 col-md-12 col-lg-7 col-xl-7 col-xxl-7 px-0 mt-5 mb-4">
+<div class="bg-white shadow rounded col-12 col-sm-12 col-md-12 col-lg-7 col-xl-7 col-xxl-7 px-0 mt-5">
     <div class="card-body p-4">
       <h2 class="mb-4">Detalhes</h2>
       <p class="card-text text-secondary fs-5" style="white-space: pre-wrap;">{{imovel.descricao}}</p>

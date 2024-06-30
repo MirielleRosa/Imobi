@@ -149,27 +149,16 @@ class PessoaRepo:
             print(ex)
             return None
 
-    # @classmethod
-    # def tornar_admin(cls, id: int) -> bool:
-    #     try:
-    #         with obter_conexao() as conexao:
-    #             cursor = conexao.cursor()
-    #             cursor.execute(SQL_TORNAR_ADMIN, (id,))
-    #             return cursor.rowcount > 0
-    #     except sqlite3.Error as ex:
-    #         print(ex)
-    #         return False
-
-    # @classmethod
-    # def revogar_admin(cls, id: int) -> bool:
-    #     try:
-    #         with obter_conexao() as conexao:
-    #             cursor = conexao.cursor()
-    #             cursor.execute(SQL_REVOGAR_ADMIN, (id,))
-    #             return cursor.rowcount > 0
-    #     except sqlite3.Error as ex:
-    #         print(ex)
-    #         return False
+    @classmethod
+    def alterar_senha(cls, id: int, senha: str) -> bool:
+        try:
+            with obter_conexao() as conexao:
+                cursor = conexao.cursor()
+                cursor.execute(SQL_ALTERAR_SENHA, (senha, id))
+                return cursor.rowcount > 0
+        except sqlite3.Error as ex:
+            print(ex)
+            return False
 
     @classmethod
     def obter_por_email(cls, email: str) -> Optional[Pessoa]:

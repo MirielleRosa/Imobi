@@ -1,38 +1,34 @@
-<div class="row row-cols-1 justify-content-start justify-content-md-center justify-content-lg-start row-cols-md-2 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5 gap-3 mt-4">
-    {% for i in imoveis %}
-    <div class="col">
-        <a href="/imovel/{{i.id}}" style="text-decoration: none; color: inherit;">
-          <div class="card" style="width: 18rem;">
-            <img src="{{i.imagem_principal}}" class="card-img-top" alt="Property Image" style="height: 160px; width: 100%; overflow: hidden;">
-            <div class="card-body">
-              <h5 class="card-title">{{i.titulo}}</h5>
-              <p class="card-text text-primary font-weight-bold">R$ {{"{:,.2f}".format(i.preco)}}</p>
-              <div class="d-flex justify-content-between text-muted">
-                  <div class="d-flex align-items-center">
-                      <img src="../../../static/img/carro.svg" alt="Garagem" class="img-fluid">
-                      <span class="ms-1 fs-6">{{i.garagem}}</span> 
-                  </div>
-                  <div class="d-flex align-items-center">
-                      <img src="../../../static/img/banheiro.svg" alt="Banheiro" class="img-fluid">
-                      <span class="ms-1 fs-6">{{i.banheiros}}</span> 
-                  </div>
-                  <div class="d-flex align-items-center">
-                      <img src="../../../static/img/area.svg" alt="Área" class="img-fluid">
-                      <span class="ms-1 fs-6">{{i.area}} m²</span>
-                  </div>
-              </div>
-              <hr>
-              <div class="d-flex align-items-center">
-                <img src="{{i.imagem_corretor if i.imagem_corretor else '/static/img/imagem-perfil.png'}}" class="rounded-circle mr-2" alt="Agent" style="width: 40px; height: 40px; object-fit: cover;">
-                <span class="ms-1 fs-6">{{i.nome_corretor}}</span>
-              </div>
+<div class="row justify-content-start justify-content-md-start justify-content-lg-start row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5 mt-4">
+  {% for i in imoveis %}
+  <div class="col mb-4"> 
+      <a href="/imovel/{{i.id}}" style="text-decoration: none; color: inherit;">
+        <div class="card">
+          <img src="{{i.imagem_principal}}" class="card-img-top" alt="Property Image" style="height: 160px; width: 100%; overflow: hidden;">
+          <div class="card-body">
+            <h5 class="card-title">{{i.titulo}}</h5>
+            <p class="card-text text-primary font-weight-bold">R$ {{"{:,.2f}".format(i.preco)}}</p>
+            <div class="d-flex justify-content-between text-muted">
+                <div class="d-flex align-items-center">
+                    <img src="../../../static/img/carro.svg" alt="Garagem" class="img-fluid">
+                    <span class="ms-1 fs-6">{{i.garagem}}</span> 
+                </div>
+                <div class="d-flex align-items-center">
+                    <img src="../../../static/img/banheiro.svg" alt="Banheiro" class="img-fluid">
+                    <span class="ms-1 fs-6">{{i.banheiros}}</span> 
+                </div>
+                <div class="d-flex align-items-center">
+                    <img src="../../../static/img/area.svg" alt="Área" class="img-fluid">
+                    <span class="ms-1 fs-6">{{i.area}} m²</span>
+                </div>
+            </div>
+            <hr>
+            <div class="d-flex align-items-center">
+              <img src="{{i.imagem_corretor if i.imagem_corretor else '/static/img/imagem-perfil.png'}}" class="rounded-circle mr-2" alt="Agent" style="width: 40px; height: 40px; object-fit: cover;">
+              <span class="ms-1 fs-6">{{i.nome_corretor}}</span>
             </div>
           </div>
-        </a>
-    </div>
-    {% endfor %}
+        </div>
+      </a>
+  </div>
+  {% endfor %}
 </div>
-
-
-
- 

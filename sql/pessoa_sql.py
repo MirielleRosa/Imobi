@@ -86,3 +86,9 @@ SQL_OBTER_QUANTIDADE_BUSCA = """
     SELECT COUNT(*) FROM pessoa
     WHERE nome LIKE ? OR cpf LIKE ?
 """
+
+SQL_ALTERAR_SENHA = """
+    UPDATE pessoa
+    SET senha=?
+    WHERE id=?
+"""

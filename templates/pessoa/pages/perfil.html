@@ -3,16 +3,14 @@
 {% block conteudo %}
 <h1 class="display-5"><b>Meu Perfil</b></h1>
 <hr>
-
 <form class="row json-form" action="/alterar_perfil" method="post" enctype="multipart/form-data">
-    <div class="text-center mb-4">
-        <div class="position-relative m-4">
-            <img id="foto-perfil" src="{% if pessoa.imagem_perfil %}{{ pessoa.imagem_perfil }}{% else %}/static/img/imagem-perfil.png{% endif %}" alt="Foto de Perfil" class="rounded-circle border border-secondary mb-5" style="width: 150px; height: 150px; object-fit: cover;">
+    <div class="text-center">
+        <div class="position-relative">
+            <img id="foto-perfil" onclick="document.getElementById('imagem').click();" src="{% if pessoa.imagem_perfil %}{{ pessoa.imagem_perfil }}{% else %}/static/img/imagem-perfil.png{% endif %}" alt="Foto de Perfil" class="rounded-circle border border-secondary mb-5" style="width: 150px; height: 150px; object-fit: cover; cursor: pointer;">
             <input type="file" id="imagem" name="imagem" class="d-none" accept="image/*" onchange="previewImagem(event)">
-            <button type="button" class="btn btn-primary position-absolute" style="bottom: 0; left: 50%; transform: translateX(-50%);" onclick="document.getElementById('imagem').click();">Alterar Foto</button>
         </div>
     </div>
-    <div class="col-12 col-lg-6">
+    <div class="col-9 mx-auto">
         <div class="form-floating mb-3">
             <input type="text" name="nome" class="form-control" id="nome" placeholder=" " value="{{ pessoa.nome }}">
             <label for="nome">Nome Completo</label>
@@ -33,8 +31,6 @@
             <textarea id="descricao" name="descricao" class="form-control" style="height: 120px" placeholder=" ">{{ pessoa.descricao if pessoa.descricao is not none else '' }}</textarea>
             <label for="descricao">Descrição</label>
         </div>
-    </div>
-    <div class="col-12 col-lg-6">
         <div class="form-floating mb-3">
             <input type="email" name="email" class="form-control" id="email" placeholder=" " value="{{ pessoa.email }}">
             <label for="email">E-mail</label>
@@ -43,20 +39,64 @@
             <input type="text" class="form-control" id="telefone" name="telefone" data-mask="telefone" placeholder=" " value="{{ pessoa.telefone }}">
             <label for="telefone">Telefone</label>
         </div>
-        <!-- <div class="form-floating mb-3">
-            <input type="password" class="form-control" id="senha" placeholder=" ">
-            <label for="senha">Senha</label>
-        </div>
-        <div class="form-floating mb-3">
-            <input type="password" class="form-control" id="confsenha" placeholder=" ">
-            <label for="confsenha">Confirmação de Senha</label>
-        </div> -->
-        <div>
-            <button class="btn btn-dark btn-lg" type="submit">Alterar Meu Cadastro!</button>
+        <div class="text-end">
+            <button class="col-3  btn btn-dark btn-lg" type="submit">Alterar</button>
         </div>
     </div>
-</form>
+</form>  
+<div class="col-9 mt-4 mx-auto">
+    <h2 class="json-form mt-4">Trocar Senha</h2>
+    <hr>
+    <form class="row json-form" method="post" action="/trocar_senha" id="trocarSenhaForm">
+        <div class="row">
+            <div class="col-md-3">
+                <label for="senhaAtual" class="form-label">Senha Atual</label>
+                <input type="password" class="form-control" id="senhaAtual" name="senha_atual" required="">
+            </div>
+            <div class="col-md-3">
+                <label for="novaSenha" class="form-label">Nova Senha</label>
+                <input type="password" class="form-control" id="novaSenha" name="nova_senha" required="">
+            </div>
+            <div class="col-md-3">
+                <label for="confirmarNovaSenha" class="form-label">Confirmar Nova Senha</label>
+                <input type="password" class="form-control" id="confirmarNovaSenha" name="confirmar_nova_senha" required="">
+            </div>
+            <div class="col-md-3 d-flex align-items-end">
+                <button class="btn btn-dark btn-lg" type="submit">Alterar</button>
+            </div>
+        </div>
+    </form>
+    
+</div>
+<div id="errorModal" class="modal fade" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="errorModalLabel">Erro</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p id="errorMessage"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="/static/js/image-form.js"></script>
 <script src="/static/js/form.js"></script>
 <script src="/static/js/inputMasks.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const params = new URLSearchParams(window.location.search);
+        const errorMessage = params.get('error');
+        if (errorMessage) {
+            document.getElementById('errorMessage').textContent = errorMessage;
+            new bootstrap.Modal(document.getElementById('errorModal')).show();
+        }
+    });
+    </script>
+    
 {% endblock %}
