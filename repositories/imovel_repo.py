@@ -163,12 +163,11 @@ class ImovelRepo:
         try:
             with obter_conexao() as conexao:
                 cursor = conexao.cursor()
-                print(f"Query de busca: {SQL_OBTER_BUSCA}")  # Verifique a query sendo executada
-                print(f"Parâmetros: {cidade_nome}")  # Verifique os parâmetros sendo passados
-                cursor.execute(SQL_OBTER_BUSCA, (cidade_nome,))
-                tuplas = cursor.fetchall()
+                print(f"Query de busca: {SQL_OBTER_BUSCA}")  
+                print(f"Parâmetros: {cidade_nome}") 
+                tuplas = cursor.execute(SQL_OBTER_BUSCA, (cidade_nome, )).fetchall()
                 imoveis = [Imovel(*t) for t in tuplas]
-                print(f"Resultado da busca: {imoveis}")  # Log para verificar os resultados (opcional)
+                print(f"Resultado da busca: {imoveis}")  # Log the search results (optional)
                 return imoveis
         except sqlite3.Error as ex:
             print(f"Erro ao buscar imóveis: {ex}")

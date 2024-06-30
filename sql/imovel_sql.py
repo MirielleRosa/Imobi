@@ -72,11 +72,16 @@ DELETE FROM imovel WHERE id = ?;
 """
 
 SQL_OBTER_BUSCA = """
-SELECT imovel.id, imovel.titulo, imovel.descricao, imovel.endereco, imovel.preco,
-       imovel.area, imovel.quartos, imovel.banheiros, imovel.imagem_principal,
-       imovel.imagens_secundarias, pessoa_id, cidade.nome AS cidade_nome, cidade.estado
+SELECT imovel.id, imovel.titulo, imovel.tipo, imovel.descricao, imovel.endereco,
+       imovel.preco, imovel.area, imovel.quartos, imovel.banheiros, imovel.garagem,
+       imovel.piscina, imovel.ar_condicionado, imovel.churrasqueira, imovel.jardim,
+       imovel.portaria, imovel.academia, imovel.imagem_principal, imovel.imagens_secundarias,
+       imovel.pessoa_id, imovel.cidade_id,
+       cidade.nome AS cidade_nome, cidade.estado,
+       pessoa.nome AS nome_corretor, pessoa.imagem_perfil AS imagem_corretor
 FROM imovel
 JOIN cidade ON imovel.cidade_id = cidade.id
+LEFT JOIN pessoa ON imovel.pessoa_id = pessoa.id
 WHERE cidade.nome LIKE ?;
 """
 

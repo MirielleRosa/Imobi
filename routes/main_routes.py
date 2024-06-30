@@ -110,7 +110,6 @@ async def get_buscar(
     imoveis = ImovelRepo.obter_busca(q, p, tp, o)
     qtde_imoveis = ImovelRepo.obter_quantidade_busca(q)
     qtde_paginas = math.ceil(qtde_imoveis / float(tp))
-
     return templates.TemplateResponse(
         "pages/buscar.html",
         {
@@ -123,8 +122,8 @@ async def get_buscar(
             "termo_busca": q,
             "ordem": o,
         },
+    
     )
-
 
 @router.get("/entrar", response_class=HTMLResponse)
 def get_entrar(request: Request, pessoa_logada: Pessoa = Depends(obter_pessoa_logada)):
