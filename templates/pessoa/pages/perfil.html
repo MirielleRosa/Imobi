@@ -39,8 +39,8 @@
             <input type="text" class="form-control" id="telefone" name="telefone" data-mask="telefone" placeholder=" " value="{{ pessoa.telefone }}">
             <label for="telefone">Telefone</label>
         </div>
-        <div class="text-end">
-            <button class="col-3  btn btn-dark btn-lg" type="submit">Alterar</button>
+        <div class="text-end col-sm-12">
+            <button class="col-md-3 col-12  btn btn-dark btn-lg" type="submit">Alterar</button>
         </div>
     </div>
 </form>  
@@ -58,15 +58,15 @@
                 <input type="password" class="form-control" id="novaSenha" name="nova_senha" required="">
             </div>
             <div class="col-md-3">
-                <label for="confirmarNovaSenha" class="form-label">Confirmar Nova Senha</label>
+                <label for="confirmarNovaSenha" class="form-label">Confirmar</label>
                 <input type="password" class="form-control" id="confirmarNovaSenha" name="confirmar_nova_senha" required="">
             </div>
-            <div class="col-md-3 d-flex align-items-end">
-                <button class="btn btn-dark btn-lg" type="submit">Alterar</button>
+            <div class="col-md-3 d-flex align-items-end mt-2">
+                <!-- Ajuste para ocupar toda a largura -->
+                <button class="btn btn-dark btn-lg w-100" type="submit">Alterar</button>
             </div>
         </div>
     </form>
-    
 </div>
 <div id="errorModal" class="modal fade" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
     <div class="modal-dialog">

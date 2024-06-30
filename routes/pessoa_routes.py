@@ -38,41 +38,44 @@ async def post_alterar_perfil(
     dados = {key: form_data[key] for key in form_data}
 
     try:
+        print(imagem)
         if imagem and imagem.filename:
-            file_name = f"{uuid.uuid4()}.png"
-            image_path = f"imagens_perfil/{file_name}"
+            print(imagem)
+            # file_name = f"{uuid.uuid4()}.png"
+            # image_path = f"imagens_perfil/{file_name}"
 
-            with open(file_name, "wb") as buffer:
-                buffer.write(await imagem.read())
+            # with open(file_name, "wb") as buffer:
+            #     buffer.write(await imagem.read())
 
-            firebaseconfig.storage.child(image_path).put(file_name)
+            # firebaseconfig.storage.child(image_path).put(file_name)
 
-            image_url = firebaseconfig.storage.child(image_path).get_url(None)
+            # image_url = firebaseconfig.storage.child(image_path).get_url(None)
 
-            os.remove(file_name)
+            # os.remove(file_name)
         else:
             image_url = pessoa_logada.imagem_perfil 
 
-        data_nascimento_str = dados.get("data_nascimento")
-        if data_nascimento_str:
-            try:
-                data_nascimento = datetime.strptime(data_nascimento_str, "%Y-%m-%d").date()
-            except ValueError as e:
-                raise HTTPException(status_code=400, detail=f"Erro ao converter data de nascimento: {str(e)}")
+            print("image_url", image_url)
+        # data_nascimento_str = dados.get("data_nascimento")
+        # if data_nascimento_str:
+        #     try:
+        #         data_nascimento = datetime.strptime(data_nascimento_str, "%Y-%m-%d").date()
+        #     except ValueError as e:
+        #         raise HTTPException(status_code=400, detail=f"Erro ao converter data de nascimento: {str(e)}")
 
-            alterar_perfil = Pessoa(
-                id=pessoa_logada.id,
-                nome=dados.get("nome"),
-                cpf=dados.get("cpf"),
-                data_nascimento=data_nascimento,
-                endereco=dados.get("endereco"),
-                telefone=dados.get("telefone"),
-                email=dados.get("email"),
-                senha=pessoa_logada.senha, 
-                imagem_perfil=image_url, 
-                descricao=dados.get("descricao")
-            )
-            PessoaRepo.alterar(alterar_perfil)
+        #     alterar_perfil = Pessoa(
+        #         id=pessoa_logada.id,
+        #         nome=dados.get("nome"),
+        #         cpf=dados.get("cpf"),
+        #         data_nascimento=data_nascimento,
+        #         endereco=dados.get("endereco"),
+        #         telefone=dados.get("telefone"),
+        #         email=dados.get("email"),
+        #         senha=pessoa_logada.senha, 
+        #         imagem_perfil=image_url, 
+        #         descricao=dados.get("descricao")
+        #     )
+        #     PessoaRepo.alterar(alterar_perfil)
 
     except KeyError as e:
         raise HTTPException(status_code=400, detail=f"Campo obrigatório ausente: {e}")
