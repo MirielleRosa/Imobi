@@ -20,3 +20,5 @@ class Imovel:
     cidade_id: Optional[int] = None
     nome_cidade: Optional[str] = None  
     estado: Optional[str] = None 
+    nome_corretor: Optional[str] = None 
+    imagem_corretor: Optional[str] = None 

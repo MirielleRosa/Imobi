@@ -32,7 +32,10 @@ WHERE id = ?;
 """
 
 SQL_OBTER_TODOS_IMOVEIS = """
-SELECT * FROM imovel;
+SELECT imovel.*, cidade.nome AS nome_cidade, cidade.estado, pessoa.nome AS nome_corretor, pessoa.imagem_perfil AS imagem_corretor
+FROM imovel
+JOIN cidade ON imovel.cidade_id = cidade.id
+JOIN pessoa ON imovel.pessoa_id = pessoa.id;
 """
 
 SQL_OBTER_TODOS_IMOVEIS_DO_CORRETOR = """

@@ -28,6 +28,7 @@ async def get_html(arquivo: str):
 @router.get("/")
 def get_root(request: Request, pessoa_logada: Pessoa = Depends(obter_pessoa_logada)):
     imoveis = ImovelRepo.obter_todos()
+    print(imoveis)
     return templates.TemplateResponse(
         "pages/index.html",
         {
@@ -110,7 +111,7 @@ async def get_buscar(
     imoveis = ImovelRepo.obter_busca(q, p, tp, o)
     qtde_imoveis = ImovelRepo.obter_quantidade_busca(q)
     qtde_paginas = math.ceil(qtde_imoveis / float(tp))
-    
+
     return templates.TemplateResponse(
         "pages/buscar.html",
         {
