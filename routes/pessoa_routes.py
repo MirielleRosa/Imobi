@@ -53,26 +53,27 @@ async def post_alterar_perfil(
             os.remove(file_name)
         else:
             image_url = pessoa_logada.imagem_perfil 
-            data_nascimento_str = dados.get("data_nascimento")
-            if data_nascimento_str:
-                try:
-                    data_nascimento = datetime.strptime(data_nascimento_str, "%Y-%m-%d").date()
-                except ValueError as e:
-                    raise HTTPException(status_code=400, detail=f"Erro ao converter data de nascimento: {str(e)}")
+        
+        data_nascimento_str = dados.get("data_nascimento")
+        if data_nascimento_str:
+            try:
+                data_nascimento = datetime.strptime(data_nascimento_str, "%Y-%m-%d").date()
+            except ValueError as e:
+                raise HTTPException(status_code=400, detail=f"Erro ao converter data de nascimento: {str(e)}")
 
-                alterar_perfil = Pessoa(
-                    id=pessoa_logada.id,
-                    nome=dados.get("nome"),
-                    cpf=dados.get("cpf"),
-                    data_nascimento=data_nascimento,
-                    endereco=dados.get("endereco"),
-                    telefone=dados.get("telefone"),
-                    email=dados.get("email"),
-                    senha=pessoa_logada.senha, 
-                    imagem_perfil=image_url, 
-                    descricao=dados.get("descricao")
-                )
-                PessoaRepo.alterar(alterar_perfil)
+        alterar_perfil = Pessoa(
+            id=pessoa_logada.id,
+            nome=dados.get("nome"),
+            cpf=dados.get("cpf"),
+            data_nascimento=data_nascimento,
+            endereco=dados.get("endereco"),
+            telefone=dados.get("telefone"),
+            email=dados.get("email"),
+            senha=pessoa_logada.senha, 
+            imagem_perfil=image_url, 
+            descricao=dados.get("descricao")
+        )
+        PessoaRepo.alterar(alterar_perfil)
 
     except KeyError as e:
         raise HTTPException(status_code=400, detail=f"Campo obrigatório ausente: {e}")
@@ -124,13 +125,9 @@ async def post_cadastro_imovel(
     dados = {key: form_data[key] for key in form_data}
     
     try:
-        cidade_id = dados.get("cidade_id")
-        if not cidade_id:
-            raise HTTPException(status_code=400, detail="Cidade não selecionada ou inválida.")
-        
         # Processar imagem principal se não for None
         image_url_principal = None
-        if imagem_principal.size > 0:
+        if imagem_principal and imagem_principal.size > 0:
             file_name_principal = f"{uuid.uuid4()}.png"
             image_path_principal = f"imagens_imoveis/{file_name_principal}"
             
@@ -141,10 +138,7 @@ async def post_cadastro_imovel(
             image_url_principal = firebaseconfig.storage.child(image_path_principal).get_url(None)
             os.remove(file_name_principal)
         
-        total_size = 0
-        for imagem_secundaria in imagens_secundarias:
-            total_size += imagem_secundaria.size
-    
+        total_size = sum(imagem.size for imagem in imagens_secundarias)
 
         imagens_urls_secundarias = []
         if total_size > 0:
@@ -182,15 +176,16 @@ async def post_cadastro_imovel(
             imagem_principal=image_url_principal, 
             imagens_secundarias=imagens_secundarias_str, 
             pessoa_id=pessoa_logada.id,
-            cidade_id=int(cidade_id)
+            cidade_id=int(dados.get("cidade_id"))
         )
 
         imovel_inserido = ImovelRepo.inserir(novo_imovel)
         if not imovel_inserido:
-            raise HTTPException(status_code=400, detail="Erro ao cadastrar imóvel.")
+            error_message = "Erro ao cadastrar imóvel."
+            return RedirectResponse(url=f"/cadastro_imovel?error={error_message}", status_code=status.HTTP_303_SEE_OTHER)
 
     except KeyError as e:
-        raise HTTPException(status_code=400, detail=f"Campo obrigatório ausente: {e}")
+        return RedirectResponse(url=f"/cadastro_imovel?error={e}", status_code=status.HTTP_303_SEE_OTHER)
 
     return RedirectResponse(url="/imoveis", status_code=status.HTTP_303_SEE_OTHER)
 
@@ -228,7 +223,6 @@ async def post_editar_imovel(
     try:
 
         if imagem_principal and imagem_principal.filename:
-            print("if imagem_principal and imagem_principal.filename:", image_url_principal)
             file_name_principal = f"{uuid.uuid4()}.png"
             image_path_principal = f"imagens_imoveis/{file_name_principal}"
 
@@ -240,7 +234,6 @@ async def post_editar_imovel(
             os.remove(file_name_principal)
         else:
             image_url_principal = imovel.imagem_principal
-            print("else imagem_principal and imagem_principal.filename:", image_url_principal)
 
         total_size = 0
         for imagem_secundaria in imagens_secundarias:
@@ -294,11 +287,9 @@ async def post_editar_imovel(
             imagem_corretor=imovel.imagem_corretor  
         )
 
-        # print("Dataa:", alterar_imovel)
-
         imovel_alterado = ImovelRepo.alterar(alterar_imovel)
         if not imovel_alterado:
-            raise HTTPException(status_code=400, detail="Erro ao atualizar imóvel.")
+            raise HTTPException(status_code=400)
 
     except KeyError as e:
         raise HTTPException(status_code=400, detail=f"Campo obrigatório ausente: {e}")

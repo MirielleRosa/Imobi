@@ -1,146 +1,149 @@
 {% extends "pages/base.html" %}
 {% block subtitulo %}Cadastro de Imóvel{% endblock %}
 {% block conteudo %}
-<h1 class="display-5 mb-4"><b>Cadastro de Imóvel</b></h1>
-<hr>
-<form class="row json-form g-3" method="post" action="/post_cadastro_imovel" enctype="multipart/form-data">
-    <div class="col-12 col-lg-6">
-        <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="titulo" name="titulo" placeholder="Título do Imóvel">
-            <label for="titulo">Título do Imóvel</label>
-        </div> 
-        <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="tipo" name="tipo" placeholder=" ">
-            <label for="tipo">Tipo do Imóvel</label>
-        </div>
-        <div class="form-floating mb-3">
-            <textarea id="descricao" class="form-control" style="height: 120px" name="descricao" placeholder=" "></textarea>
-            <label for="descricao">Descrição</label>
-        </div>
-        <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="endereco" name="endereco" placeholder=" ">
-            <label for="endereco">Endereço</label>
-        </div>
-        <div class="form-floating mb-3">
-            <select class="form-select" id="cidade" name="cidade_id">
-                <option value="" disabled selected>Selecione a cidade</option>
-                {% for cidade in cidades %}
-                    <option value="{{ cidade.id }}">{{ cidade.nome }}, {{ cidade.estado }}</option>
-                {% endfor %}
-            </select>
-            <label for="cidade">Cidade</label>
-            <button type="button" class="btn btn-light mt-3" data-bs-toggle="modal" data-bs-target="#modalCidade">
-                <i class="bi bi-plus-lg"></i> Adicionar nova cidade
-            </button>
-        </div>
-    </div>
-    <div class="col-12 col-lg-6">
-        <div class="form-floating mb-3">
-            <input type="number" class="form-control" id="preco" name="preco" placeholder=" ">
-            <label for="preco">Preço</label>
-        </div>
-        <div class="form-floating mb-3">
-            <input type="number" class="form-control" id="area" name="area" placeholder=" ">
-            <label for="area">Área (m²)</label>
-        </div>
-        <div class="form-floating mb-3">
-            <input type="number" class="form-control" id="quartos" name="quartos" placeholder=" ">
-            <label for="quartos">Número de Quartos</label>
-        </div>
-        <div class="form-floating mb-3">
-            <input type="number" class="form-control" id="garagem" name="garagem" placeholder=" ">
-            <label for="garagem">Capacidade Garagem</label>
-        </div>
-        <div class="form-floating mb-3">
-            <input type="number" class="form-control" id="banheiros" name="banheiros" placeholder=" ">
-            <label for="banheiros">Número de Banheiros</label>
-        </div>
-    </div>
-    <div class="col-12">
-        <div class="card">
-            <div class="card-header">
-                <h5 class="card-title">Características</h5>
+<div class="container">
+    <h1 class="display-5 mb-4"><b>Cadastro de Imóvel</b></h1>
+    <hr>
+    <form class="row json-form g-3" method="post" action="/post_cadastro_imovel" enctype="multipart/form-data">
+        <div class="col-12 col-lg-6">
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="titulo" name="titulo" placeholder="Título do Imóvel" required>
+                <label for="titulo">Título do Imóvel</label>
+            </div> 
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="tipo" name="tipo" placeholder=" " required>
+                <label for="tipo">Tipo do Imóvel</label>
             </div>
-            <div class="form-floating m-4">
-                <div class="row">
-                    <div class="col">
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="piscina" name="piscina" value="true">
-                            <label class="form-check-label" for="piscina">Piscina</label>
+            <div class="form-floating mb-3">
+                <textarea id="descricao" class="form-control" style="height: 120px" name="descricao" placeholder=" " required></textarea>
+                <label for="descricao">Descrição</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="endereco" name="endereco" placeholder=" " required>
+                <label for="endereco">Endereço</label>
+            </div>
+            <div class="form-floating mb-3">
+                <select class="form-select" id="cidade" name="cidade_id" placeholder=" " required>
+                    <option value="" disabled selected>Selecione a cidade</option>
+                    {% for cidade in cidades %}
+                        <option value="{{ cidade.id }}">{{ cidade.nome }}, {{ cidade.estado }}</option>
+                    {% endfor %}
+                </select>
+                <label for="cidade">Cidade</label>
+                <button type="button" class="btn btn-light mt-3" data-bs-toggle="modal" data-bs-target="#modalCidade">
+                    <i class="bi bi-plus-lg"></i> Adicionar nova cidade
+                </button>
+            </div>
+        </div>
+        <div class="col-12 col-lg-6">
+            <div class="form-floating mb-3">
+                <input type="number" class="form-control" id="preco" name="preco" placeholder=" " required>
+                <label for="preco">Preço</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="number" class="form-control" id="area" name="area" placeholder=" " required>
+                <label for="area">Área (m²)</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="number" class="form-control" id="quartos" name="quartos" placeholder=" " required>
+                <label for="quartos">Número de Quartos</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="number" class="form-control" id="garagem" name="garagem" placeholder=" " required>
+                <label for="garagem">Capacidade Garagem</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="number" class="form-control" id="banheiros" name="banheiros" placeholder=" " required>
+                <label for="banheiros">Número de Banheiros</label>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Características</h5>
+                </div>
+                <div class="form-floating m-4">
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="piscina" name="piscina" value="true">
+                                <label class="form-check-label" for="piscina">Piscina</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="ar_condicionado" name="ar_condicionado" value="true">
+                                <label class="form-check-label" for="ar_condicionado">Ar Condicionado</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="churrasqueira" name="churrasqueira" value="true">
+                                <label class="form-check-label" for="churrasqueira">Churrasqueira</label>
+                            </div>
                         </div>
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="ar_condicionado" name="ar_condicionado" value="true">
-                            <label class="form-check-label" for="ar_condicionado">Ar Condicionado</label>
-                        </div>
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="churrasqueira" name="churrasqueira" value="true">
-                            <label class="form-check-label" for="churrasqueira">Churrasqueira</label>
+                        <div class="col">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="jardim" name="jardim" value="true">
+                                <label class="form-check-label" for="jardim">Jardim</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="portaria_24h" name="portaria_24h" value="true">
+                                <label class="form-check-label" for="portaria_24h">Portaria 24h</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="academia" name="academia" value="true">
+                                <label class="form-check-label" for="academia">Academia</label>
+                            </div>
                         </div>
                     </div>
-                    <div class="col">
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="jardim" name="jardim" value="true">
-                            <label class="form-check-label" for="jardim">Jardim</label>
-                        </div>
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="portaria_24h" name="portaria_24h" value="true">
-                            <label class="form-check-label" for="portaria_24h">Portaria 24h</label>
-                        </div>
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="academia" name="academia" value="true">
-                            <label class="form-check-label" for="academia">Academia</label>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    
-    <div class="col-12">
-        <div class="col-12 col-sm-12 col-md-7 col-lg-5">
-            <div class="mb-3">
-                <label for="imagem_principal" class="form-label">Imagem Principal</label>
-            <input type="file" class="form-control" id="imagem_principal" name="imagem_principal">
-            </div>
-            <div class="mb-3">
-                <label for="imagens_secundarias" class="form-label">Imagens Secundárias</label>
-                <input type="file" class="form-control" id="imagens_secundarias" name="imagens_secundarias" multiple>
-            </div>
-        </div>
-        <div class="text-end">
-            <button type="submit" class="btn btn-dark btn-lg">Cadastrar Imóvel</button>
-        </div>
-    </div>
-</form>
-<div class="modal fade" id="modalCidade" tabindex="-1" aria-labelledby="modalCidadeLabel" aria-hidden="true">
-    <form class="modal-dialog" method="post" action="/post_cadastro_cidade">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalCidadeLabel">Adicionar Nova Cidade</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="nome" name="nome" placeholder=" ">
-                    <label for="nome">Nome da Cidade</label>
+        
+        <div class="col-12">
+            <div class="col-12 col-sm-12 col-md-7 col-lg-5">
+                <div class="mb-3">
+                    <label for="imagem_principal" class="form-label">Imagem Principal</label>
+                <input type="file" class="form-control" id="imagem_principal" name="imagem_principal" required>
                 </div>
-                <div class="form-floating mb-3">
-                    <select class="form-select" id="estado" name="estado">
-                        <option value="" disabled selected>Selecione o estado</option>
-                        {% for cidade in cidades %}
-                            <option value="{{ cidade.estado }}">{{ cidade.estado }}</option>
-                        {% endfor %}
-                    </select>
-                    <label for="estado">Estado</label>
+                <div class="mb-3">
+                    <label for="imagens_secundarias" class="form-label">Imagens Secundárias</label>
+                    <input type="file" class="form-control" id="imagens_secundarias" name="imagens_secundarias" multiple>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                <button type="submit" class="btn btn-primary">Salvar Cidade</button>
+            <div class="text-end">
+                <button type="submit" class="btn btn-dark btn-lg">Cadastrar Imóvel</button>
             </div>
         </div>
     </form>
+    <div class="modal fade" id="modalCidade" tabindex="-1" aria-labelledby="modalCidadeLabel" aria-hidden="true">
+        <form class="modal-dialog" method="post" action="/post_cadastro_cidade">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalCidadeLabel">Adicionar Nova Cidade</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="nome" name="nome" placeholder=" " required>
+                        <label for="nome">Nome da Cidade</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <select class="form-select" id="estado" name="estado" required>
+                            <option value="" disabled selected>Selecione o estado</option>
+                            {% for cidade in cidades %}
+                                <option value="{{ cidade.estado }}">{{ cidade.estado }}</option>
+                            {% endfor %}
+                        </select>
+                        <label for="estado">Estado</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-primary">Salvar Cidade</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div>
+    </div>
 </div>
 <script src="/static/js/form.js"></script>
-<script src="/static/js/inputMasks.js"></script>
 {% endblock %}

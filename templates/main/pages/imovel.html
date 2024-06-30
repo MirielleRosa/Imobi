@@ -1,193 +1,195 @@
 {% extends "pages/base.html" %}
 {% block subtitulo %}Detalhes do Imóvel {{imovel.nome}}{% endblock %}
 {% block conteudo %}
-<div class="d-flex flex-column flex-lg-row justify-content-between">
-    <div>
-      <h1 class="display-5">{{imovel.titulo}}</h1>
-      <span class="text-muted">{{imovel.endereco}}, {{imovel.nome_cidade}}, {{imovel.estado}}</span>
-    </div>
-    <div class="text-lg-end mt-3 mt-lg-0">
-      <h2 class="display-5">R$ {{"{:,.2f}".format(imovel.preco)}}</h2>
-      <span class="text-muted">{{imovel.area}} m²</span>
-    </div>
-</div>
-<div class="d-flex flex-column col flex-lg-row justify-content-between gap-3 gap-lg-5 mt-4 mb-3">
-    <div id="carouselExampleIndicators" class="carousel slide col-12 col-xl-7 col-lg-7 col-md-12" data-bs-ride="carousel" class="carousel slide" style="background: #EEEDDE;">
-        <div class="carousel-indicators">
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-            {% set imagens_secundarias = imovel.imagens_secundarias.split(',') %}
-            {% set imagens_secundarias_validas = [] %}
-            {% for imagem in imagens_secundarias %}
-                {% if imagem.strip() %}
-                    {% set _ = imagens_secundarias_validas.append(imagem.strip()) %}
-                {% endif %}
-            {% endfor %}
-            {% for i in range(imagens_secundarias_validas|length) %}
-                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ i + 1 }}" aria-label="Slide {{ i + 2 }}"></button>
-            {% endfor %}
+<div class="container">
+    <div class="d-flex flex-column flex-lg-row justify-content-between">
+        <div>
+          <h1 class="display-5">{{imovel.titulo}}</h1>
+          <span class="text-muted">{{imovel.endereco}}, {{imovel.nome_cidade}}, {{imovel.estado}}</span>
         </div>
-        <div class="carousel-inner">
-            <div class="carousel-item active">
-                <div class="d-flex align-items-center justify-content-center" style="height: 500px;">
-                    <img src="{{imovel.imagem_principal}}" class="h-100" alt="Imagem principal">
-                </div>
+        <div class="text-lg-end mt-3 mt-lg-0">
+          <h2 class="display-5">R$ {{"{:,.2f}".format(imovel.preco)}}</h2>
+          <span class="text-muted">{{imovel.area}} m²</span>
+        </div>
+    </div>
+    <div class="d-flex flex-column col flex-lg-row justify-content-between gap-3 gap-lg-5 mt-4 mb-3">
+        <div id="carouselExampleIndicators" class="carousel slide col-12 col-xl-7 col-lg-7 col-md-12" data-bs-ride="carousel" class="carousel slide" style="background: #EEEDDE;">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                {% set imagens_secundarias = imovel.imagens_secundarias.split(',') %}
+                {% set imagens_secundarias_validas = [] %}
+                {% for imagem in imagens_secundarias %}
+                    {% if imagem.strip() %}
+                        {% set _ = imagens_secundarias_validas.append(imagem.strip()) %}
+                    {% endif %}
+                {% endfor %}
+                {% for i in range(imagens_secundarias_validas|length) %}
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ i + 1 }}" aria-label="Slide {{ i + 2 }}"></button>
+                {% endfor %}
             </div>
-            {% if imagens_secundarias_validas %}
-            {% for imagem in imagens_secundarias_validas %}
-                <div class="carousel-item">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
                     <div class="d-flex align-items-center justify-content-center" style="height: 500px;">
-                        <img src="{{imagem}}" class="h-100" alt="Imagem secundária">
+                        <img src="{{imovel.imagem_principal}}" class="h-100" alt="Imagem principal">
                     </div>
                 </div>
+                {% if imagens_secundarias_validas %}
+                {% for imagem in imagens_secundarias_validas %}
+                    <div class="carousel-item">
+                        <div class="d-flex align-items-center justify-content-center" style="height: 500px;">
+                            <img src="{{imagem}}" class="h-100" alt="Imagem secundária">
+                        </div>
+                    </div>
+                {% endfor %}
+                {% endif %}
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+            <div class="d-flex mt-3 justify-content-center flex-wrap d-sm-flex d-md-flex d-lg-none">
+            {% if imagens_secundarias_validas %}
+            {% for imagem in [imovel.imagem_principal] + imagens_secundarias %}
+            <div class="col-auto mb-3">
+                <img src="{{ imagem }}" class="img-thumbnail" style="width: 100px; height: 100px; cursor: pointer;" onclick="selectImage('{{ imagem }}')" alt="Imagem">
+            </div>
             {% endfor %}
             {% endif %}
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
+        <div class="d-flex justify-content-center col-12 col-lg-4 col-xl-4 col-xxl-4">
+            <form class="bg-white px-5 rounded-3 py-3 shadow w-100" method="post">
+                <div class="d-flex align-items-center mb-2">
+                    <img src="{{imovel.imagem_corretor if imovel.imagem_corretor else '/static/img/imagem-perfil.png'}}" class="rounded-circle me-2" alt="Corretor" width="40" height="40">
+                    <div>
+                        <div class="fw-bold">{{imovel.nome_corretor}}</div>
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <label for="nome" class="form-label">Nome</label>
+                    <input type="text" id="nome" class="form-control">
+                </div>
+                <div class="mb-2">
+                    <label for="telefone" class="form-label">Telefone</label>
+                    <input type="tel" id="telefone" class="form-control">
+                </div>
+                <div class="mb-2">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" id="email" class="form-control">
+                </div>
+                <div class="mb-2">
+                    <label for="message" class="form-label">Mensagem</label>
+                    <textarea id="message" class="form-control" rows="3" style="resize: none;"></textarea>
+                </div>
+                <button type="button" class="btn btn-dark w-100 mb-2">Enviar</button>
+            </form>
+        </div>
     </div>
-        <div class="d-flex mt-3 justify-content-center flex-wrap d-sm-flex d-md-flex d-lg-none">
+    <div class="d-flex mt-3 d-none d-sm-none d-md-none d-lg-flex d-xl-flex d-xxl-flex">
         {% if imagens_secundarias_validas %}
         {% for imagem in [imovel.imagem_principal] + imagens_secundarias %}
-        <div class="col-auto mb-3">
+        <div class="col-auto">
             <img src="{{ imagem }}" class="img-thumbnail" style="width: 100px; height: 100px; cursor: pointer;" onclick="selectImage('{{ imagem }}')" alt="Imagem">
         </div>
         {% endfor %}
         {% endif %}
     </div>
-    <div class="d-flex justify-content-center col-12 col-lg-4 col-xl-4 col-xxl-4">
-        <form class="bg-white px-5 rounded-3 py-3 shadow w-100" method="post">
-            <div class="d-flex align-items-center mb-2">
-                <img src="{{imovel.imagem_corretor if imovel.imagem_corretor else '/static/img/imagem-perfil.png'}}" class="rounded-circle me-2" alt="Corretor" width="40" height="40">
-                <div>
-                    <div class="fw-bold">{{imovel.nome_corretor}}</div>
-                </div>
+    <div class="bg-white shadow rounded bg-white shadow rounded col-12 col-sm-12 col-md-12 col-lg-7 col-xl-7 col-xxl-7 px-0 mt-5">
+        <div class="w-100">
+            <h2 class="m-2 p-3">Detalhes</h2>
+            <div class="table-responsive m-3">
+                <table class="table">
+                    <tbody>
+                        <tr class="">
+                            <th style="text-align: left;">Quartos</th>
+                            <td style="text-align: left;">{{imovel.quartos}}</td>
+                        </tr>
+                        <tr>
+                            <th style="text-align: left;">Banheiros</th>
+                            <td style="text-align: left;">{{imovel.banheiros}}</td>
+                        </tr>
+                        <tr>
+                            <th style="text-align: left;">Garagem</th>
+                            <td style="text-align: left;">{{imovel.garagem}}</td>
+                        </tr>
+                        <tr>
+                            <th style="text-align: left;">Área</th>
+                            <td style="text-align: left;">{{imovel.area}} m²</td>
+                        </tr>
+                        <tr>
+                            <th style="text-align: left;">Piscina</th>
+                            <td style="text-align: left;">
+                                {% if imovel.piscina %}
+                                <i class="bi bi-check-square"></i>
+                                {% else %}
+                                <i class="bi bi-x-lg"></i>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style="text-align: left;">Jardim</th>
+                            <td style="text-align: left;">
+                                {% if imovel.jardim %}
+                                <i class="bi bi-check-square"></i>
+                                {% else %}
+                                <i class="bi bi-x-lg"></i>
+                                {% endif %}
+                            </td>
+                        </tr> 
+                        <tr>
+                            <th style="text-align: left;">Churrasqueira</th>
+                            <td style="text-align: left;">
+                                {% if imovel.churrasqueira %}
+                                <i class="bi bi-check-square"></i>
+                                {% else %}
+                                <i class="bi bi-x-lg"></i>
+                                {% endif %}
+                            </td>
+                        </tr> 
+                        <tr>
+                            <th style="text-align: left;">Ar Condicionado</th>
+                            <td style="text-align: left;">
+                                {% if imovel.ar_condicionado %}
+                                <i class="bi bi-check-square"></i>
+                                {% else %}
+                                <i class="bi bi-x-lg"></i>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style="text-align: left;">Portaria</th>
+                            <td style="text-align: left;">
+                                {% if imovel.portaria %}
+                                <i class="bi bi-check-square"></i>
+                                {% else %}
+                                <i class="bi bi-x-lg"></i>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style="text-align: left;">Academia</th>
+                            <td style="text-align: left;">
+                                {% if imovel.academia %}
+                                <i class="bi bi-check-square"></i>
+                                {% else %}
+                                <i class="bi bi-x-lg"></i>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-            <div class="mb-2">
-                <label for="nome" class="form-label">Nome</label>
-                <input type="text" id="nome" class="form-control">
-            </div>
-            <div class="mb-2">
-                <label for="telefone" class="form-label">Telefone</label>
-                <input type="tel" id="telefone" class="form-control">
-            </div>
-            <div class="mb-2">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" id="email" class="form-control">
-            </div>
-            <div class="mb-2">
-                <label for="message" class="form-label">Mensagem</label>
-                <textarea id="message" class="form-control" rows="3" style="resize: none;"></textarea>
-            </div>
-            <button type="button" class="btn btn-dark w-100 mb-2">Enviar</button>
-        </form>
-    </div>
-</div>
-<div class="d-flex mt-3 d-none d-sm-none d-md-none d-lg-flex d-xl-flex d-xxl-flex">
-    {% if imagens_secundarias_validas %}
-    {% for imagem in [imovel.imagem_principal] + imagens_secundarias %}
-    <div class="col-auto">
-        <img src="{{ imagem }}" class="img-thumbnail" style="width: 100px; height: 100px; cursor: pointer;" onclick="selectImage('{{ imagem }}')" alt="Imagem">
-    </div>
-    {% endfor %}
-    {% endif %}
-</div>
-<div class="bg-white shadow rounded bg-white shadow rounded col-12 col-sm-12 col-md-12 col-lg-7 col-xl-7 col-xxl-7 px-0 mt-5">
-    <div class="w-100">
-        <h2 class="m-2 p-3">Detalhes</h2>
-        <div class="table-responsive m-3">
-            <table class="table">
-                <tbody>
-                    <tr class="">
-                        <th style="text-align: left;">Quartos</th>
-                        <td style="text-align: left;">{{imovel.quartos}}</td>
-                    </tr>
-                    <tr>
-                        <th style="text-align: left;">Banheiros</th>
-                        <td style="text-align: left;">{{imovel.banheiros}}</td>
-                    </tr>
-                    <tr>
-                        <th style="text-align: left;">Garagem</th>
-                        <td style="text-align: left;">{{imovel.garagem}}</td>
-                    </tr>
-                    <tr>
-                        <th style="text-align: left;">Área</th>
-                        <td style="text-align: left;">{{imovel.area}} m²</td>
-                    </tr>
-                    <tr>
-                        <th style="text-align: left;">Piscina</th>
-                        <td style="text-align: left;">
-                            {% if imovel.piscina %}
-                            <i class="bi bi-check-square"></i>
-                            {% else %}
-                            <i class="bi bi-x-lg"></i>
-                            {% endif %}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th style="text-align: left;">Jardim</th>
-                        <td style="text-align: left;">
-                            {% if imovel.jardim %}
-                            <i class="bi bi-check-square"></i>
-                            {% else %}
-                            <i class="bi bi-x-lg"></i>
-                            {% endif %}
-                        </td>
-                    </tr> 
-                    <tr>
-                        <th style="text-align: left;">Churrasqueira</th>
-                        <td style="text-align: left;">
-                            {% if imovel.churrasqueira %}
-                            <i class="bi bi-check-square"></i>
-                            {% else %}
-                            <i class="bi bi-x-lg"></i>
-                            {% endif %}
-                        </td>
-                    </tr> 
-                    <tr>
-                        <th style="text-align: left;">Ar Condicionado</th>
-                        <td style="text-align: left;">
-                            {% if imovel.ar_condicionado %}
-                            <i class="bi bi-check-square"></i>
-                            {% else %}
-                            <i class="bi bi-x-lg"></i>
-                            {% endif %}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th style="text-align: left;">Portaria</th>
-                        <td style="text-align: left;">
-                            {% if imovel.portaria %}
-                            <i class="bi bi-check-square"></i>
-                            {% else %}
-                            <i class="bi bi-x-lg"></i>
-                            {% endif %}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th style="text-align: left;">Academia</th>
-                        <td style="text-align: left;">
-                            {% if imovel.academia %}
-                            <i class="bi bi-check-square"></i>
-                            {% else %}
-                            <i class="bi bi-x-lg"></i>
-                            {% endif %}
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
         </div>
     </div>
-</div>
-<div class="bg-white shadow rounded col-12 col-sm-12 col-md-12 col-lg-7 col-xl-7 col-xxl-7 px-0 mt-5">
-    <div class="card-body p-4">
-      <h2 class="mb-4">Detalhes</h2>
-      <p class="card-text text-secondary fs-5" style="white-space: pre-wrap;">{{imovel.descricao}}</p>
+    <div class="bg-white shadow rounded col-12 col-sm-12 col-md-12 col-lg-7 col-xl-7 col-xxl-7 px-0 mt-5">
+        <div class="card-body p-4">
+          <h2 class="mb-4">Detalhes</h2>
+          <p class="card-text text-secondary fs-5" style="white-space: pre-wrap;">{{imovel.descricao}}</p>
+        </div>
     </div>
 </div>
 <script>

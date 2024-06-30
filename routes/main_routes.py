@@ -62,6 +62,18 @@ def get_cadastro(
         },
     )
 
+@router.get("/sobre")
+def get_cadastro(
+    request: Request, pessoa_logada: Pessoa = Depends(obter_pessoa_logada)
+):
+    return templates.TemplateResponse(
+        "pages/sobre.html",
+        {
+            "request": request,
+            "pessoa": pessoa_logada,
+        },
+    )
+
 @router.post("/post_cadastro", response_class=JSONResponse)
 async def post_cadastro(pessoa: NovaPessoaDTO):
     pessoa_data = pessoa.model_dump(exclude={"confirmacao_senha"})

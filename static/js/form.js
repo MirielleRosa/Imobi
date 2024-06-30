@@ -69,5 +69,28 @@ function handleRedirectResponse(redirect) {
     }
 }
 
+
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('.json-form');
+    form.addEventListener('submit', function(e) {
+        let isValid = true;
+        const inputs = form.querySelectorAll('input[required], select[required], textarea[required]');
+
+        inputs.forEach(input => {
+            if (!input.value) {
+                isValid = false;
+                input.classList.add('is-invalid'); 
+            } else {
+                input.classList.remove('is-invalid');
+            }
+        });
+
+        if (!isValid) {
+            e.preventDefault();
+            alert('Por favor, preencha todos os campos obrigatórios.');
+        }
+    });
+});
+
 // Chama a função de inicialização quando a página é totalmente carregada
 window.addEventListener('load', initializeJsonForm);
