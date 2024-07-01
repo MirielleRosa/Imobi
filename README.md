@@ -76,5 +76,3 @@ pip install -r requirements.txt
 Em seguida, para iniciar a aplicação, utilize:
 
 uvicorn main:app --reload
-
-
