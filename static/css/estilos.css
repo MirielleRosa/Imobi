@@ -65,7 +65,7 @@
 }
 
 .transparent-bg {
-    background-color: rgba(255, 255, 255, 0.89); /* Ajuste a opacidade conforme necessário */
+    background-color: rgba(255, 255, 255, 0.89); 
 }
 
 .page-link {
@@ -137,17 +137,17 @@
 }
 
 .titulo-principal {
-    font-family: 'Lato', sans-serif; /* Usando a fonte Lato para o título principal */
-    font-weight: 500; /* Peso da fonte Lato que deseja usar */
-    font-size: 2.5rem; /* Ajuste o tamanho conforme necessário */
-    color: var(--bs-primary); /* Cor primária definida no seu root CSS */
+    font-family: 'Lato', sans-serif; 
+    font-weight: 500; 
+    font-size: 2.5rem; 
+    color: var(--bs-primary); 
 }
 
 .descricao-principal {
-    font-family: 'Open Sans', sans-serif; /* Usando a fonte Open Sans para a descrição principal */
-    font-weight: 300; /* Peso da fonte Open Sans que deseja usar */
-    font-size: 1.2rem; /* Ajuste o tamanho conforme necessário */
-    color: var(--bs-dark); /* Cor escura definida no seu root CSS */
+    font-family: 'Open Sans', sans-serif; 
+    font-weight: 300; 
+    font-size: 1.2rem; 
+    color: var(--bs-dark); 
 }
 .h1-topo {
     font-family: 'Open Sans', sans-serif;
@@ -162,6 +162,18 @@
 
 @media (max-width: 576px) {
     .sm-font-size {
-      font-size: 1rem; /* Ajuste o tamanho da fonte conforme necessário */
+      font-size: 1rem; 
     }
+}
+
+.profileImage {
+    width: 100px;
+    height: 100px;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+.profileImage img {
+    width: 100%;
+    height: auto;
 }

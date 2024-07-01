@@ -1,12 +1,62 @@
 {% extends "pages/base.html" %}
 {% block subtitulo %}Sobre Nós{% endblock %}
 {% block conteudo %}
-<!-- <div class="position-relative bg-primary text-white text-center p-5">
-  <img src="/static/img/sobre.png" class="img-fluid position-absolute w-100 h-100" style="object-fit: cover; top: 0; left: 0;" alt="">
-  <div class="position-absolute w-100 h-100 d-flex justify-content-center align-items-center">
-    <div>
-      <h1 class="display-1">SOBRE NÓS</h1>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-4 d-none d-md-block">
+      <img src="/static/img/hadid.jpg" alt="Imagem" class="img-fluid h-100" style="object-fit: cover;">
+    </div>
+    <div class="col-md-8">
+      <section id="about" class="about-section py-5">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-12 about-content">
+              <h2 class="section-title mb-4 display-5">Sobre Nós</h2>
+              <p class="mb-4 display-8">A Imobi Corretora de Imóveis é um projeto desenvolvido para a disciplina de Desenvolvimento Web, com o propósito de apresentar uma seleção de imóveis disponíveis, proporcionando uma experiência singular tanto para os corretores quanto para os clientes.</p>
+              <hr class="my-4">
+              <div class="row" id="profilesRow">
+                <div class="col-md-4 col-sm-6 mb-4">
+                  <div class="card shadow-sm border-0 h-100">
+                    <div class="card-body text-center">
+                      <div class="profileImage rounded-circle mb-3">
+                        <img src="/static/img/maroquio.png" alt="Ricardo Maroquio" class="img-fluid rounded-circle" style="width: 100px; height: 100px;">
+                      </div>
+                      <h5 class="card-title mb-0">Professor Responsável</h5>
+                      <p class="card-text mt-3">Ricardo Maroquio</p>
+                      <a href="https://github.com/maroquio" target="_blank">Github</a>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4 col-sm-6 mb-4">
+                  <div class="card shadow-sm border-0 h-100">
+                    <div class="card-body text-center">
+                      <div class="profileImage rounded-circle mb-3">
+                        <img src="/static/img/mirielle.png" alt="Mirielle Rosa" class="img-fluid rounded-circle" style="width: 100px; height: 100px;">
+                      </div>
+                      <h5 class="card-title mb-0">Aluna</h5>
+                      <p class="card-text mt-3">Mirielle Rosa</p>
+                      <a href="https://github.com/MirielleRosa" target="_blank">Github</a>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4 col-sm-6 mb-4">
+                  <div class="card shadow-sm border-0 h-100">
+                    <div class="card-body text-center">
+                      <div class="profileImage rounded-circle mb-3">
+                        <img src="/static/img/milena.png" alt="Milena Melo" class="img-fluid rounded-circle" style="width: 100px; height: 100px;">
+                      </div>
+                      <h5 class="card-title mb-0">Aluna</h5>
+                      <p class="card-text mt-3">Milena Melo</p>
+                      <a href="https://github.com/meloMilena" target="_blank">Github</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   </div>
-</div> -->
+</div>
 {% endblock %}
