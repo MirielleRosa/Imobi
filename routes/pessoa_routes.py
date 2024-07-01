@@ -103,7 +103,7 @@ async def post_cadastro_cidade(request: Request, pessoa_logada: Pessoa = Depends
 @router.get("/imoveis")
 def get_imoveis(request: Request, pessoa_logada: Pessoa = Depends(obter_pessoa_logada)):
     checar_autorizacao(pessoa_logada)
-    imoveis = ImovelRepo.obter_todos_pessoa(pessoa_logada.id) 
+    imoveis = ImovelRepo.obter_todos_pessoa(pessoa_logada.id)
     return templates.TemplateResponse("pages/imoveis.html", {"request": request, "pessoa": pessoa_logada, "imoveis": imoveis})
 
 @router.get("/cadastro_imovel")

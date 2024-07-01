@@ -44,14 +44,20 @@ WHERE id = ?;
 
 
 SQL_OBTER_TODOS_IMOVEIS = """
-SELECT imovel.*, cidade.nome AS nome_cidade, cidade.estado, pessoa.nome AS nome_corretor, pessoa.imagem_perfil AS imagem_corretor
+SELECT imovel.*, cidade.nome AS nome_cidade, cidade.estado, pessoa.nome AS nome_corretor, pessoa.imagem_perfil AS imagem_corretor, 
+pessoa.email AS email_corretor, pessoa.telefone AS telefone_corretor, pessoa.descricao AS descricao_corretor
 FROM imovel
 JOIN cidade ON imovel.cidade_id = cidade.id
 JOIN pessoa ON imovel.pessoa_id = pessoa.id;
 """
 
 SQL_OBTER_TODOS_IMOVEIS_DO_CORRETOR = """
-SELECT * FROM imovel WHERE pessoa_id = ?;
+SELECT imovel.*, cidade.nome AS nome_cidade, cidade.estado, pessoa.nome AS nome_corretor, pessoa.imagem_perfil AS imagem_corretor, 
+pessoa.email AS email_corretor, pessoa.telefone AS telefone_corretor, pessoa.descricao AS descricao_corretor
+FROM imovel 
+JOIN cidade ON imovel.cidade_id = cidade.id
+JOIN pessoa ON imovel.pessoa_id = pessoa.id
+WHERE pessoa.id = ?;
 """
 
 SQL_OBTER_QUANTIDADE = """
