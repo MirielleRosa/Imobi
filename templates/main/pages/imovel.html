@@ -19,9 +19,9 @@
                 {% set imagens_secundarias = imovel.imagens_secundarias.split(',') %}
                 {% set imagens_secundarias_validas = [] %}
                 {% for imagem in imagens_secundarias %}
-                    {% if imagem.strip() %}
-                        {% set _ = imagens_secundarias_validas.append(imagem.strip()) %}
-                    {% endif %}
+                {% if imagem.strip() %}
+                {% set _ = imagens_secundarias_validas.append(imagem.strip()) %}
+                {% endif %}
                 {% endfor %}
                 {% for i in range(imagens_secundarias_validas|length) %}
                     <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ i + 1 }}" aria-label="Slide {{ i + 2 }}"></button>
@@ -53,13 +53,15 @@
             </button>
         </div>
             <div class="d-flex mt-3 justify-content-center flex-wrap d-sm-flex d-md-flex d-lg-none">
-            {% if imagens_secundarias_validas %}
-            {% for imagem in [imovel.imagem_principal] + imagens_secundarias %}
-            <div class="col-auto mb-3">
-                <img src="{{ imagem }}" class="img-thumbnail" style="width: 100px; height: 100px; cursor: pointer;" onclick="selectImage('{{ imagem }}')" alt="Imagem">
-            </div>
-            {% endfor %}
-            {% endif %}
+                {% if imagens_secundarias_validas %}
+                {% for imagem in imagens_secundarias_validas %}
+                    <div class="carousel-item">
+                        <div class="d-flex align-items-center justify-content-center" style="height: 500px;">
+                            <img src="{{imagem}}" class="h-100" alt="Imagem secundária">
+                        </div>
+                    </div>
+                {% endfor %}
+                {% endif %}
         </div>
         <div class="d-flex justify-content-center col-12 col-lg-4 col-xl-4 col-xxl-4">
             <form class="bg-white px-5 rounded-3 py-3 shadow w-100" method="post">
@@ -91,10 +93,12 @@
     </div>
     <div class="d-flex mt-3 d-none d-sm-none d-md-none d-lg-flex d-xl-flex d-xxl-flex">
         {% if imagens_secundarias_validas %}
-        {% for imagem in [imovel.imagem_principal] + imagens_secundarias %}
-        <div class="col-auto">
-            <img src="{{ imagem }}" class="img-thumbnail" style="width: 100px; height: 100px; cursor: pointer;" onclick="selectImage('{{ imagem }}')" alt="Imagem">
-        </div>
+        {% for imagem in imagens_secundarias_validas %}
+            <div class="carousel-item">
+                <div class="d-flex align-items-center justify-content-center" style="height: 500px;">
+                    <img src="{{imagem}}" class="h-100" alt="Imagem secundária">
+                </div>
+            </div>
         {% endfor %}
         {% endif %}
     </div>
