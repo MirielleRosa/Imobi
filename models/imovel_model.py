@@ -27,3 +27,6 @@ class Imovel:
     estado: Optional[str] = None
     nome_corretor: Optional[str] = None
     imagem_corretor: Optional[str] = None
+    email_corretor: Optional[str] = None
+    telefone_corretor: Optional[str] = None
+    descricao_corretor: Optional[str] = None

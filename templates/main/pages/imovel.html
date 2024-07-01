@@ -64,31 +64,26 @@
                 {% endif %}
         </div>
         <div class="d-flex justify-content-center col-12 col-lg-4 col-xl-4 col-xxl-4">
-            <form class="bg-white px-5 rounded-3 py-3 shadow w-100" method="post">
-                <div class="d-flex align-items-center mb-2">
-                    <img src="{{imovel.imagem_corretor if imovel.imagem_corretor else '/static/img/imagem-perfil.png'}}" class="rounded-circle me-2" alt="Corretor" width="40" height="40">
+            <div class="bg-white px-5 rounded-3 py-5 shadow w-100 mt-3" >
+                <div class="d-flex align-items-center mb-4 ">
+                    <img src="{{imovel.imagem_corretor if imovel.imagem_corretor else '/static/img/imagem-perfil.png'}}" class="rounded-circle me-3" alt="Corretor" width="40" height="40">
                     <div>
                         <div class="fw-bold">{{imovel.nome_corretor}}</div>
                     </div>
                 </div>
                 <div class="mb-2">
-                    <label for="nome" class="form-label">Nome</label>
-                    <input type="text" id="nome" class="form-control">
-                </div>
-                <div class="mb-2">
                     <label for="telefone" class="form-label">Telefone</label>
-                    <input type="tel" id="telefone" class="form-control">
+                    <input type="tel" id="telefone" class="form-control" value="{{imovel.telefone_corretor}}" readonly>
                 </div>
                 <div class="mb-2">
                     <label for="email" class="form-label">Email</label>
-                    <input type="email" id="email" class="form-control">
+                    <input type="email" id="email" class="form-control" value="{{imovel.email_corretor}}" readonly>
                 </div>
                 <div class="mb-2">
-                    <label for="message" class="form-label">Mensagem</label>
-                    <textarea id="message" class="form-control" rows="3" style="resize: none;"></textarea>
+                    <label for="message" class="form-label">Descrição</label>
+                    <textarea id="message" class="form-control" rows="3" style="resize: none;" readonly>{{imovel.descricao_corretor}}</textarea>
                 </div>
-                <button type="button" class="btn btn-dark w-100 mb-2">Enviar</button>
-            </form>
+            </div>
         </div>
     </div>
     <div class="d-flex mt-3 d-none d-sm-none d-md-none d-lg-flex d-xl-flex d-xxl-flex">
