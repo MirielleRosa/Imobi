@@ -1,14 +1,18 @@
 import pyrebase
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 config = {
-  "apiKey": "AIzaSyD4JhfdbDA4b_4Pdtzc5BWweUk6VNJldrA",
-  "authDomain": "corretorauploads.firebaseapp.com",
-  "projectId": "corretorauploads",
-  "storageBucket": "corretorauploads.appspot.com",
-  "messagingSenderId": "51020789655",
-  "appId": "1:51020789655:web:4d977fa9bd7df399f876d2",
-  "measurementId": "G-WN0T6Q3HRK",
-  "databaseURL": "" 
+    "apiKey": os.getenv("FIREBASE_API_KEY"),
+    "authDomain": os.getenv("FIREBASE_AUTH_DOMAIN"),
+    "projectId": os.getenv("FIREBASE_PROJECT_ID"),
+    "storageBucket": os.getenv("FIREBASE_STORAGE_BUCKET"),
+    "messagingSenderId": os.getenv("FIREBASE_MESSAGING_SENDER_ID"),
+    "appId": os.getenv("FIREBASE_APP_ID"),
+    "measurementId": os.getenv("FIREBASE_MEASUREMENT_ID"),
+    "databaseURL": os.getenv("FIREBASE_DATABASE_URL"),
 }
 
 firebase = pyrebase.initialize_app(config)
